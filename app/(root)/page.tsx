@@ -1,18 +1,18 @@
-import { currentUserDb, getListings } from "@/actions";
+import {getListings } from "@/actions";
 import Heading from "@/components/Heading";
 import ProductsGrid from "@/components/ListingsGrid";
-import NavBar from "@/components/navbar/NavBar";
+
 import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
 
 export default async function Home() {
   const fetchedData = (await getListings()) || [];
-  const user = await currentUserDb();
+
 
   return (
     <>
-      <NavBar />
+
       <div className=" h-[150dvh] ">
         {fetchedData?.length == 0 && (
           <>

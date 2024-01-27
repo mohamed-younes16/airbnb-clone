@@ -6,11 +6,9 @@ import { ReactNode } from "react";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { GeistMono } from "geist/font/mono";
-import NavBar from "@/components/navbar/NavBar";
 import { currentUserDb } from "@/actions";
-import { redirect } from "next/navigation";
 import CheckUser from "@/components/CheckUser";
-import { Button } from "@/components/ui/button";
+
 
 export const metadata = {
   title: "airbnb-clone",
@@ -41,7 +39,7 @@ export default async function RootLayout({
             
             <div
               className="  min-h-screen  transition-all 
-          bg-cover g-[url(/assets/light-bg.svg)] bg-white dark:bg-[url(/assets/dark-bg.svg)]   dark:bg-transparent bg-[#3e3e3efc]
+          bg-cover bg-[url(/assets/bg-light.svg)] bg-white dark:bg-[url(/assets/dark-bg.svg)]   dark:bg-transparent bg-[#3e3e3efc]
             
           "
             >

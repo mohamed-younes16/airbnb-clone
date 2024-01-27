@@ -41,3 +41,18 @@ export const getListings = async () => {
   }));
   return dataFiltered;
 };
+export const getListingById = async (id: string) => {
+  const user = await currentUserDb();
+
+  const data = await prismadb.listing.findFirst({
+    where: { id },
+  });
+
+  const userFavourites = new Set(user?.favourites.map((e) => e.id));
+  const dataReturned = {
+    ...data,
+    isFavourated: userFavourites.has(data?.id || "") || false,
+    createdAt: data?.createdAt.toDateString()!,
+  }
+  return dataReturned;
+};

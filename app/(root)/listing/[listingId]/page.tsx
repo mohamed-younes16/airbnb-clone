@@ -1,9 +1,25 @@
-import React from 'react'
+import { getListingById } from "@/actions";
+import Heading from "@/components/Heading";
+import React from "react";
 
-const page = () => {
+const page = async ({
+  params: { listingId },
+}: {
+  params: { listingId: string };
+}) => {
+  const listing = await getListingById(listingId);
   return (
-    <div>page</div>
-  )
-}
+    <div>
+      {listing !== null && (
+        <>
+          <Heading
+            title={listing.title || ""}
+            description={listing.category || ""}
+          />
+        </>
+      )}
+    </div>
+  );
+};
 
-export default page
+export default page;

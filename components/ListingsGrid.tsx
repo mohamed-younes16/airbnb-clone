@@ -105,7 +105,7 @@ const ListingsGrid = ({
                   </m.p>
                   <div className="flexcenter gap-1">
                     <StarIcon className="fill-foreground  h-4 w-4" />
-                    <span className="">
+                    <span suppressHydrationWarning className="">
                       {Math.max(Math.random() * 5, 3).toFixed(2)}{" "}
                     </span>
                   </div>

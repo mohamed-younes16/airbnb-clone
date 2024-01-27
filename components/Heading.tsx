@@ -1,8 +1,8 @@
 import React from "react";
 
 const Heading = ({
-  title,
-  description,
+  title="",
+  description="",
 }: {
   title: string;
   description: string;
