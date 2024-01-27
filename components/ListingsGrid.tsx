@@ -17,7 +17,7 @@ import { motion as m } from "framer-motion";
 import { Listing } from "@prisma/client";
 import Favourite from "./Favourite";
 
-const ProductsGrid = ({
+const ListingsGrid = ({
   listings,
 }: {
   listings: FetchedListingType[];
@@ -85,7 +85,7 @@ const ProductsGrid = ({
                   />
                 </div> */}
               </CardContent>
-              <Link className="block px-6" href={`/product/${e.id}`}>
+              <Link className="block px-6" href={`/listing/${e.id}`}>
                 <div className="flex items-center justify-between w-full">
                   <m.p
                     viewport={{ once: true }}
@@ -147,7 +147,7 @@ const ProductsGrid = ({
                 </div>
               </Link>
               <CardFooter className="flex-col items-start gap-2">
-                <Link href={`/product/${e.id}`}>
+                <Link href={`/listing/${e.id}`}>
                   {" "}
                   <Button>Check it Out</Button>
                 </Link>
@@ -175,4 +175,4 @@ const ProductsGrid = ({
   );
 };
 
-export default ProductsGrid;
+export default ListingsGrid;
