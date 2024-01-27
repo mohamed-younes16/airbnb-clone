@@ -36,3 +36,10 @@ interface FetchedListingType {
   locationValue: string;
   updatedAt: Date;
 }
+interface LocationValueType {
+  value: string;
+  flag: string;
+  latlang: number[];
+  region: string;
+  label: string;
+}

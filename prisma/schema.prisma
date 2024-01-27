@@ -9,9 +9,9 @@ datasource db {
 }
 
 model User {
-  id       String @id @unique @default(cuid())
-  name     String
-  username String
+  id           String        @id @unique @default(cuid())
+  name         String
+  username     String
   imageUrl     String
   reservations Reservation[] @relation("reservation_owner")
   listing      Listing[]     @relation("listing_owner")
@@ -20,27 +20,29 @@ model User {
   onboarded    Boolean
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+
   @@unique([name])
   @@index([id])
 }
 
 model Listing {
-  id             String        @id @unique @default(cuid())
-  ownerId        String
-  owner          User          @relation("listing_owner", fields: [ownerId], onDelete: Cascade, references: [id])
-  title          String
-  images         String[]
-  description    String
+  id            String        @id @unique @default(cuid())
+  ownerId       String
+  owner         User          @relation("listing_owner", fields: [ownerId], onDelete: Cascade, references: [id])
+  title         String
+  images        String[]
+  description   String
   roomCount     Int
   guestCount    Int
   bathroomCount Int
-  reservations   Reservation[] @relation("reservation_listing")
-  price          Int
-  category       String
-  favouritedBy   User[]        @relation("favourited_user")
-  locationValue  String
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  reservations  Reservation[] @relation("reservation_listing")
+  price         Int
+  category      String
+  favouritedBy  User[]        @relation("favourited_user")
+  locationValue String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  reviews       Int           @default(0)
 }
 
 model Reservation {

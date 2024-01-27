@@ -39,9 +39,9 @@ const CategorieBox = ({
           onClick={handleclick}
           className={`flexcenter flex-col group relative  ${
             currentCategorie == label && "text-main "
-          }  overflow-x-hidden  hover:opacity-90 pb-2 hover:text-main transition  gap-1`}
+          }  overflow-x-hidden text-sm  hover:opacity-90 pb-2 hover:text-main transition  gap-1`}
         >
-          <Icon size={25} />
+          <Icon size={20} />
           <p>{label}</p>
           <div
             className={`absolute  transition-all bg-main bottom-0 -translate-x-full w-full h-1 ${

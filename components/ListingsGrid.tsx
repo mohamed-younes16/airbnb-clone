@@ -14,15 +14,10 @@ import { StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion as m } from "framer-motion";
-import { Listing } from "@prisma/client";
 import Favourite from "./Favourite";
+import ImageContainer from "./ImageContainer";
 
-const ListingsGrid = ({
-  listings,
-}: {
-  listings: FetchedListingType[];
-}) => {
-    
+const ListingsGrid = ({ listings }: { listings: FetchedListingType[] }) => {
   return (
     <div className=" w-full">
       <div
@@ -43,47 +38,33 @@ const ListingsGrid = ({
             }}
             initial={{ opacity: 0, y: 50 }}
           >
-            <Card className="w-[350px] overflow-hidden">
+            <Card className="w-[350px] ">
               <CardContent
-                className="h-[250px] group  py-6 !px-0 mb-6
-               rounded-xl overflow-hidden relative"
+                className=" group  py-6 !px-0 mb-6
+               rounded-xl  relative"
               >
                 <Carousel className="w-[90%] relative overflow-hidden rounded-xl mx-auto">
                   <div className="absolute top-1 z-10 right-1">
                     <Favourite isFavour={e.isFavourated} listingId={e.id} />
                   </div>
-                  <CarouselContent className=" rounded-xl">
+                  <CarouselContent className=" rounded-2xl ">
                     {e.images.map((el) => (
                       <CarouselItem
-                        className="ml-2 p-0 group rounded-xl overflow-hidden"
+                        className="ml-2 p-0 rounded-xl overflow-hidden group "
                         key={el}
                       >
-                        <Image
-                          alt={e.id}
-                          className="object-cover group-hover:scale-110
-                                  transition-all rounded-xl !w-full !h-full "
-                          src={el}
-                          height={50}
-                          width={100}
-                        />
+                        <div
+                          className="object-cover group-hover:scale-110 rounded-xl
+                                  transition-all max-h-[230px] h-[230px]  overflow-hidden !w-full  "
+                        >
+                          <ImageContainer src={el} />
+                        </div>
                       </CarouselItem>
                     ))}
                   </CarouselContent>
                   <CarouselPrevious className="left-0  " />
                   <CarouselNext className="right-0  " />
                 </Carousel>
-
-                {/*                
-                <div className="h-full rounded-xl w-full overflow-hidden">
-                  <Image
-                    alt={e.id}
-                    className="object-cover group-hover:scale-110
-                     transition-all rounded-xl !w-full !h-full"
-                    src={e.images[0]}
-                    height={50}
-                    width={100}
-                  />
-                </div> */}
               </CardContent>
               <Link className="block px-6" href={`/listing/${e.id}`}>
                 <div className="flex items-center justify-between w-full">
@@ -164,7 +145,7 @@ const ListingsGrid = ({
                   className=" text-neutral-500   flex gap-1"
                   initial={{ opacity: 0, x: -100 }}
                 >
-                <span> Created At : </span>  {e.createdAt}
+                  <span> Created At : </span> {e.createdAt}
                 </m.div>
               </CardFooter>
             </Card>

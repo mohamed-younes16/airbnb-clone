@@ -3,7 +3,7 @@
     </clipPath><clipPath id="d"><path fill="currentColor" d="M814.5 687.5Q715 862 532.5 829t-326-174.5Q63 513 176.5 320t353-221q239.5-28 312 193t-27 395.5Z"/></clipPath>
     <pattern id="b" patternUnits="userSpaceOnUse" width="25" height="25" viewBox="0 0 100 100" fill="#df5256" patternTransform="rotate(45 0 0)"><path d="M0 0v100" stroke="#df5256" stroke-width="20"/>
     </pattern><pattern id="e" patternUnits="userSpaceOnUse" width="25" height="25" viewBox="0 0 100 100" fill="#df5256"><circle cx="50" cy="50" r="12.5"/></pattern></defs>
-    <path fill="#efefef" d="M0 0h2000v1400H0z"/><g clip-path="url(#a)" transform="translate(327.622 69.622)"><path fill="url(#b)" d="M914 804.5Q833 989 633.5 966T297 781.5Q160 620 283 435t331.5-176.5Q823 267 909 443.5t5 361Z"/>
+    <path fill="#ffffff" d="M0 0h2000v1400H0z"/><g clip-path="url(#a)" transform="translate(327.622 69.622)"><path fill="url(#b)" d="M914 804.5Q833 989 633.5 966T297 781.5Q160 620 283 435t331.5-176.5Q823 267 909 443.5t5 361Z"/>
     </g><g clip-path="url(#c)" transform="translate(92.638 -138.773)"><path fill="#f7f7f7" d="M577 486q29 68-25 123.5T400.5 717q-97.5 52-101-79.5T259 462q-37-44 2-87t68-92.5q29-49.5 87.5-46t144 9.5q85.5 6 36.5 89t-20 151Z"/></g>
 <g clip-path="url(#d)" transform="translate(-567.131 750.936)">
     <path fill="url(#e)" d="M814.5 687.5Q715 862 532.5 829t-326-174.5Q63 513 176.5 320t353-221q239.5-28 312 193t-27 395.5Z"/></g></svg>

@@ -6,7 +6,7 @@ import "@uploadthing/react/styles.css";
 import { useStore } from "@/hooks/store";
 import { useMemo, useState } from "react";
 import Heading from "../Heading";
-import { categoriesList } from "../navbar/Categories";
+
 import CategoryInput from "../inputs/CategoryInput";
 import { toast } from "sonner";
 import axios from "axios";
@@ -36,6 +36,7 @@ import { LatLngExpression } from "leaflet";
 import { title } from "process";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RentSchema } from "@/models/Schemas/Setup";
+import { categoriesList } from "../navbar/NavBar";
 enum STEPS {
   CATEGORY = 0,
   LOCATION = 1,
@@ -138,6 +139,7 @@ const RentModal = () => {
               {categoriesList.map((e) => (
                 <CategoryInput
                   key={e.label}
+                  active={true}
                   onClick={() =>
                     setValue("category", e.label.toLocaleLowerCase(), {
                       shouldTouch: true,
@@ -325,9 +327,8 @@ const RentModal = () => {
     }
   }
   return (
-
-    <Dialog open={isRentModalOpen}  onOpenChange={(e) => setisRentModalOpen(e)}>
-      <DialogTrigger  asChild className=" max-md:hidden text-start w-full">
+    <Dialog open={isRentModalOpen} onOpenChange={(e) => setisRentModalOpen(e)}>
+      <DialogTrigger asChild className=" max-md:hidden text-start w-full">
         <div className="flexcenter">
           <Button className="rounded-full" variant={"ghost"}>
             Airbnb your home

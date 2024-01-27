@@ -1,3 +1,4 @@
+"use client"
 import L, { LatLngExpression } from "leaflet";
 import React from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
@@ -13,7 +14,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow.src,
 });
 const Map = ({ center }: { center: LatLngExpression }) => {
-
+console.assert(center)
   return (
     <div className="w-full mt-6 rounded-xl h-[35dvh] ">
       <MapContainer

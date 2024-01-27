@@ -2,6 +2,7 @@
 import prismadb from "@/lib/prismabd";
 import { currentUser } from "@clerk/nextjs";
 
+
 export const ignoreKeys = (obj, keysToIgnore) => {
   const newObj = { ...obj };
   keysToIgnore.forEach((key) => delete newObj[key]);
@@ -46,6 +47,7 @@ export const getListingById = async (id: string) => {
 
   const data = await prismadb.listing.findFirst({
     where: { id },
+    include: { owner: { select: { username: true, imageUrl: true } } },
   });
 
   const userFavourites = new Set(user?.favourites.map((e) => e.id));
@@ -53,6 +55,8 @@ export const getListingById = async (id: string) => {
     ...data,
     isFavourated: userFavourites.has(data?.id || "") || false,
     createdAt: data?.createdAt.toDateString()!,
-  }
+    owner: { ...data?.owner },
+    locationValue:JSON.parse((data?.locationValue || "" ) ) as LocationValueType
+  };
   return dataReturned;
 };
