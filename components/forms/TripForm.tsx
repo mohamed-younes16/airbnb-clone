@@ -1,94 +1,57 @@
 "use client";
-
 import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { productSchema } from "@/models/Schemas/Setup";
+import { reviewSchema } from "@/models/Schemas/Setup";
 import * as z from "zod";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-
 import axios from "axios";
-
-import { ImagePlusIcon, Loader2, Trash2 } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Loader2, Star } from "lucide-react";
 import { useState } from "react";
-import Heading from "../Heading";
-import Image from "next/image";
-import { UploadButton } from "@/utils/uploadthing";
-import { Checkbox } from "@/components/ui/checkbox";
 import _ from "lodash";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import "@uploadthing/react/styles.css";
-import { ignoreKeys } from "@/actions";
 import { Review } from "@prisma/client";
+import ImageContainer from "../ImageContainer";
+import { useRouter } from "next/navigation";
 
 const TripForm = ({
   tripId,
   review,
-
-}: {tripId:string,review?:Review}) => {
-
+  userData,
+}: {
+  tripId: string;
+  review: Review | null;
+  userData: { username: string; imageUrl: string };
+}) => {
   const [isSub, setIsSub] = useState(false);
-  const [begain, setBegain] = useState(false);
-  const [start, setstart] = useState(0);
-  const form = useForm<z.infer<typeof productSchema>>({
-    resolver: zodResolver(productSchema),
-    defaultValues: {
-  
-    },
+  const [stars, setstars] = useState(review?.stars || 5);
+  const form = useForm<z.infer<typeof reviewSchema>>({
+    resolver: zodResolver(reviewSchema),
+    defaultValues: { stars: 5, message: review?.message },
   });
+  const router = useRouter();
 
-  const watchedFormData = form.watch();
-  const keysToIgnore = ["createdAt", "updatedAt", "tripId", "id"];
-  const initialProduct = {
-    // ...ignoreKeys(review, keysToIgnore),
-
-  };
-
-  const isFormDataChanged = !_.isEqual(initialProduct, watchedFormData);
-
-  async function onSubmit(values: z.infer<typeof productSchema>) {
+  async function onSubmit(values: z.infer<typeof reviewSchema>) {
+    setIsSub(true);
     try {
-      const data = {
+      const adding = axios.post(`/api/reservation/review`, {
         ...values,
-        price: +values.price,
-      };
-   
-
-      const adding =axios.post(`/api/trips/${tripId}/review`, data);
+        reservationId: tripId,
+      });
 
       adding
         .then((e) => {
           toast.dismiss();
           setIsSub(false);
-
+          router.refresh();
           toast.success(e.data.message, { invert: true });
-
-          window.location.assign(`/dashboard/${tripId}/products`);
         })
         .catch((e) => {
           toast.dismiss();
@@ -107,165 +70,84 @@ const TripForm = ({
   }
   return (
     <>
-
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-8">
-          <div className="grid grid-cols-3 gap-6 justify-start  w-full ">
-            {" "}
-            <FormField
-              control={form.control}
-              name="images"
-              render={({ field }) => (
-                <FormItem className=" flex gap-6 col-span-full items-start  flex-wrap ">
-                  <FormLabel>image</FormLabel>
-
-                  {field.value.length > 0 && (
-                    <Carousel
-                      opts={{ startIndex: start }}
-                      className="w-full !m-0 max-h-[350px] max-w-lg"
-                    >
-                      <CarouselContent>
-                        {field.value?.map((image) => (
-                          <CarouselItem key={image}>
-                            <div className="p-1">
-                              <Card>
-                                <CardContent className="flex max-[500px]:h-[250px] max-md:h-[300px] h-[350px]   items-center justify-center p-6">
-                                  <>
-                                    <FormLabel
-                                      className="  relative 
-                           w-full  m-0 h-full
-                          bg-zinc-900 rounded-xl  flexcenter "
-                                    >
-                                      <Trash2
-                                        onClick={() => {
-                                          const filterd = field.value.filter(
-                                            (e) => e !== image
-                                          );
-                                          field.onChange(filterd);
-                                        }}
-                                        className="absolute cursor-pointer transition-all  
-                      hover:scale-105 bg-red-500 top-0 right-0
-                      rounded-md  p-2 h-10 w-10 text-white z-50"
-                                      />
-                                      <Image
-                                        src={image}
-                                        className="object-cover rounded-lg"
-                                        alt="image of you"
-                                        fill
-                                      />
-                                    </FormLabel>
-                                  </>
-                                </CardContent>
-                              </Card>
-                            </div>
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-                      <CarouselPrevious />
-                      <CarouselNext />
-                    </Carousel>
-                  )}
-
-                  <div className="flex !m-0">
-                    <UploadButton
-                      content={{
-                        button: (
-                          <div className="flexcenter whitespace-nowrap text-foreground gap-6">
-                            {!begain ? (
-                              <>
-                                <ImagePlusIcon className="" />
-                                <p>Upload An Image</p>
-                              </>
-                            ) : (
-                              <Loader2 className="relative z-50 animate-spin" />
-                            )}
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="mt-6 space-y-8
+          backdrop-blur-md rounded-xl max-w-6xl mx-auto  border-accent border-[1px] p-8 "
+        >
+          <div className=" gap-6justify-start w-full ">
+            <div className="flex justify-between mb-9">
+              <div className="flex items-center gap-4">
+                <div className="relative rounded-full h-14 w-14 overflow-hidden">
+                  <ImageContainer alt="your image" src={userData.imageUrl} />
+                </div>
+                <p className="font-bold capitalize text-2xl">
+                  {userData.username}
+                </p>
+              </div>
+              <FormField
+                control={form.control}
+                name="stars"
+                render={() => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="flex ">
+                        {Array.from({ length: 5 }).map((e, i) => (
+                          <div
+                            onClick={() => {
+                              setstars(i + 1);
+                              form.setValue("stars", i + 1, {
+                                shouldDirty: true,
+                              });
+                            }}
+                            className=" transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                          >
+                            <Star
+                              className={`${
+                                i + 1 <= stars && "fill-yellow-400"
+                              } h-8 w-8`}
+                            />
                           </div>
-                        ),
-                      }}
-                      endpoint="imageUploader"
-                      className="items-start"
-                      appearance={{
-                        button: `bg-border w-52 p-2  text-primary-foreground `,
-                      }}
-                      onUploadBegin={() => setBegain(true)}
-                      onClientUploadComplete={(e) => {
-                        setBegain(false);
-                        field.onChange(field.value.concat(e?.[0].url!));
-                        setstart(form.watch().images.length - 1);
-                      }}
-                    />
-                  </div>
-                </FormItem>
-              )}
-            />
+                        ))}
+                      </div>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>{" "}
             <FormField
               control={form.control}
-              name="name"
+              name="message"
               render={({ field }) => (
                 <FormItem className=" flex flex-col w-full   ">
-                  <FormLabel>Name of Product</FormLabel>
-
+                  <FormLabel>Review of Place</FormLabel>
+                  <div className="grid w-full gap-2"></div>
                   <FormControl>
-                    <Input
-                      className="account-form_input "
-                      type="text"
+                    <Textarea
                       {...field}
+                      placeholder="Type your message here."
                     />
                   </FormControl>
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="price"
-              render={() => (
-                <FormItem className=" flex flex-col w-full   ">
-                  <FormLabel>Price of Product</FormLabel>
-
-                  <FormControl className="flex items-center">
-                    <>
-                      {" "}
-                      <Input
-                        className="account-form_input "
-                        type="number"
-                        {...form.register("price", { valueAsNumber: true })}
-                      />
-                    </>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem className=" flex flex-col w-full   ">
-                  <FormLabel>description of Product</FormLabel>
-
-                  <FormControl className="">
-                    <Input
-                      className="account-form_input "
-                      type="text"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-        
-           
           </div>
-          {isFormDataChanged && (
+
+          {form.formState.isDirty && (
             <div className="flex items-center gap-6 justify-start">
               <Button
                 type="submit"
-                disabled={isSub}
+                disabled={isSub || form.formState.isSubmitting}
                 className={`${
                   isSub ? " bg-foreground" : ""
-                } flexcenter w-[100px] gap-6`}
+                } flexcenter w-full gap-6`}
               >
-                {isSub && <Loader2 className="h-6 w-6 animate-spin " />}
-                {isSub ? (
+                {isSub ||
+                  (form.formState.isSubmitting && (
+                    <Loader2 className="h-6 w-6 animate-spin " />
+                  ))}
+                {isSub || form.formState.isSubmitting ? (
                   <Loader2 className="h-6 w-6 animate-spin " />
                 ) : (
                   "Submit"

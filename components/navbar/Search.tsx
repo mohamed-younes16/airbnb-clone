@@ -39,7 +39,10 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Separator } from "../ui/separator";
-import { FaAirbnb } from "react-icons/fa6";
+import { FaAirbnb, FaPersonCircleQuestion } from "react-icons/fa6";
+import Counter from "../inputs/Counter";
+import { useRouter, useSearchParams } from "next/navigation";
+import queryString from "query-string";
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
@@ -104,9 +107,34 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 export const NavigationMenuDemo = () => {
+  const router = useRouter();
+  const params = useSearchParams();
+  const currentGuests = +(params?.get("guests") || "1") || 1;
+  console.log(currentGuests);
   const [value, setValue] = useState("");
+  const [guestsCount, setGuests] = useState(currentGuests || 1);
+
+  const onSearch = () => {
+    const query = queryString.parse(params.toString());
+    const newquery: any = {
+      ...query,
+      guests: guestsCount || 1,
+    };
+
+    const url = queryString.stringifyUrl(
+      {
+        url: "/",
+        query: newquery,
+      },
+      { skipNull: true }
+    );
+    router.push(url);
+  };
   return (
-    <NavigationMenu value={value}>
+    <NavigationMenu
+      value={value}
+      onValueChange={(e) => e.length > 0 && setValue(e)}
+    >
       <NavigationMenuList
         className="flexcenter max-lg:text-sm w-fit whitespace-nowrap 
           px-4 border-foreground/20 font-semibold border py-2 shadow-md
@@ -141,15 +169,14 @@ export const NavigationMenuDemo = () => {
                   </a>
                 </NavigationMenuLink>
               </li>
-              <ListItem href="/docs" title="Introduction">
-                Re-usable components built using Radix UI and Tailwind CSS.
-              </ListItem>
-              <ListItem href="/docs/installation" title="Installation">
-                How to install dependencies and structure your app.
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
-              </ListItem>
+              <Counter
+                counter={guestsCount}
+                title="Guests count"
+                description="how many guests can your place have ?"
+                icon={<FaPersonCircleQuestion size={25} />}
+                max={30}
+                onChange={(v) => setGuests(v)}
+              />
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -201,7 +228,10 @@ export const NavigationMenuDemo = () => {
           </NavigationMenuContent>
         </NavigationMenuItem>
 
-        <div className="rounded-full p-2  text-sm text-white  ml-2 flexcenter bg-main">
+        <div
+          onClick={() => onSearch()}
+          className="rounded-full p-2 text-sm text-white  ml-6 flexcenter bg-main"
+        >
           <SearchIcon strokeWidth={3} className="h-6 w-6" />
         </div>
       </NavigationMenuList>

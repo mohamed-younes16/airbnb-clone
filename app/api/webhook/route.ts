@@ -31,15 +31,15 @@ export async function POST(req: Request) {
   ];
   const addressString = addressCopmonents.filter((e) => e !== null).join(", ");
   if (event.type === "checkout.session.completed") {
-    console.log({
-      where: { id: session?.metadata?.orderId },
-      data: {
-        isPaid: true,
-        address: addressString,
-        phoneNumber: session?.customer_details?.phone || "",
-      },
-      include: { items: true },
-    });
+    // console.log({
+    //   where: { id: session?.metadata?.orderId },
+    //   data: {
+    //     isPaid: true,
+    //     address: addressString,
+    //     phoneNumber: session?.customer_details?.phone || "",
+    //   },
+    //   include: { items: true },
+    // });
     const order = []
     //  await prismadb.order.update({
     //   where: { id: session?.metadata?.orderId },

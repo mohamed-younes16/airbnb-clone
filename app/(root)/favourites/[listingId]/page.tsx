@@ -4,16 +4,15 @@ import Favourite from "@/components/Favourite";
 import ImagesShow from "./components/ImageShow";
 import { DatePickerWithRange } from "@/components/inputs/DatePickerWithRange";
 import ListingShowCase from "@/components/ListingShowCase";
-import { auth, currentUser } from "@clerk/nextjs";
 
 const page = async ({
   params: { listingId },
 }: {
   params: { listingId: string };
 }) => {
-  const listing = await getListingById(listingId);
+  const listing  = await getListingById(listingId);
   const images = listing?.images;
-  const { userId } = auth();
+
   const fromDate =
     listing.reservations &&
     listing.reservations[0] &&
@@ -35,16 +34,14 @@ const page = async ({
           </div>
 
           <div className="flex gap-2 mt-8 ">
-            <ListingShowCase listing={listing} />
-            {listing.ownerId !== userId && (
-              <div>
-                <DatePickerWithRange
-                  fromDate={fromDate}
-                  listingId={listingId}
-                  price={listing.price || 0}
-                />
-              </div>
-            )}
+            <ListingShowCase listing={listing } />
+            <div>
+              <DatePickerWithRange
+                fromDate={fromDate}
+                listingId={listingId}
+                price={listing.price || 0}
+              />
+            </div>
           </div>
         </>
       )}

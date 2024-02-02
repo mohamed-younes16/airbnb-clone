@@ -97,7 +97,6 @@ const ImagesInput = ({
           onClientUploadComplete={(e) => {
             setBegain(false);
             const newImages = images.concat(e?.[0].url!);
-            console.log(newImages);
             onChange(newImages);
             setstart(newImages.length - 1);
           }}

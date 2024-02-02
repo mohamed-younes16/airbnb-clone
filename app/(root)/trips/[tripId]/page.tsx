@@ -4,14 +4,20 @@ import TripForm from "@/components/forms/TripForm";
 
 const page = async ({ params: { tripId } }: { params: { tripId: string } }) => {
   const trip = await GetReservationById(tripId);
-  console.log(trip)
+
   return (
-    <div>
+    <div className="px-4">
       <Heading
         title="Review"
         description="Leave A Review of the place please be polite"
       />
-      <TripForm review={trip?.review!} tripId={tripId} />
+      {trip && (
+        <TripForm
+          userData={trip.owner}
+          review={trip?.review}
+          tripId={tripId}
+        />
+      )}
     </div>
   );
 };

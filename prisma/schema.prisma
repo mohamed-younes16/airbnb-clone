@@ -1,11 +1,13 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
+
 }
 
 model User {
@@ -42,6 +44,8 @@ model Listing {
   locationValue String
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+
+  @@index([id])
 }
 
 model Reservation {
@@ -57,6 +61,8 @@ model Reservation {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   review     Review?  @relation("reservation_Review")
+
+  @@index([id])
 }
 
 model Review {
@@ -67,4 +73,6 @@ model Review {
   stars         Int         @default(1)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+
+  @@index([id])
 }

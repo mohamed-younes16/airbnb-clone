@@ -37,6 +37,7 @@ interface FetchedListingType {
   category: string;
   locationValue: string;
   updatedAt: Date;
+  reviews: number[];
 }
 interface LocationValueType {
   value: string;
@@ -64,8 +65,8 @@ interface FetchedTripsType {
   favouritedBy: {
     id: string;
   }[];
-  isActive:boolean
-  isEnded:boolean
+  isActive: boolean;
+  isEnded: boolean;
 }
 
 interface ListingByIdType extends Listing {

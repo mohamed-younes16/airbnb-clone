@@ -5,6 +5,7 @@ import { Heart, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import debounce from "lodash/debounce";
+import { useRouter } from "next/navigation";
 const Favourite = ({
   listingId,
   isFavour = false,
@@ -12,6 +13,7 @@ const Favourite = ({
   listingId: string;
   isFavour: boolean;
 }) => {
+  const router = useRouter();
   const [isFavourated, setIsfavourated] = useState<boolean>(isFavour);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleClick = debounce(async (action: "add" | "delete") => {
@@ -27,6 +29,7 @@ const Favourite = ({
         toast.dismiss();
         actionHandle;
         toast.message(e.data.message);
+        router.refresh();
       })
       .catch((e) => {
         toast.dismiss();

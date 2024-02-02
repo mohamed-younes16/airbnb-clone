@@ -80,11 +80,8 @@ export function DatePickerWithRange({
         )
         .catch((e) => {
           toast.dismiss();
+          toast.error(e?.response?.data?.message || "Error Happend");
 
-          toast.error(e.response.data.message || "Error Happend", {
-            invert: true,
-          });
-          console.log(e);
         })
         .finally(() => setIsLoading(false));
 

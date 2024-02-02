@@ -1,4 +1,4 @@
-import {getListings } from "@/actions";
+import { getListings } from "@/actions";
 import Heading from "@/components/Heading";
 import ProductsGrid from "@/components/ListingsGrid";
 
@@ -6,13 +6,20 @@ import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
 
-export default async function Home() {
-  const fetchedData = (await getListings()) || [];
-
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { guests: string; continent: string };
+}) {
+  console.log(searchParams);
+  const fetchedData =
+    (await getListings({
+      guestCount: +searchParams?.guests || 1,
+      continent: searchParams.continent || "",
+    })) || [];
 
   return (
     <>
-
       <div className=" h-[150dvh] ">
         {fetchedData?.length == 0 && (
           <>
@@ -28,7 +35,9 @@ export default async function Home() {
           </>
         )}
 
-        {fetchedData ? <ProductsGrid type="listing" listings={fetchedData} /> : null}
+        {fetchedData ? (
+          <ProductsGrid type="listing" listings={fetchedData} />
+        ) : null}
       </div>
     </>
   );

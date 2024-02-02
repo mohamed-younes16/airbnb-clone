@@ -31,14 +31,19 @@ const ListingsGrid = ({
     }
   | {
       listings: FetchedTripsType[];
-      type: "trip";
+      type: "trip" | "order";
     }) => {
   const router = useRouter();
   const [loading, setIsLoading] = useState("");
   const handleClick = async (id: string) => {
     setIsLoading(id);
     try {
-      const adding = axios.delete(`/api/reservation`, { data: { id } });
+      const adding = axios.delete(`/api/reservation`, {
+        data: {
+          id,
+          userType: type == "order" ? "seller" : type === "trip" ? "buyer" : "",
+        },
+      });
       adding
         .then(({ data: { message } }: { data: { message: string } }) => {
           toast.dismiss();
@@ -79,13 +84,15 @@ const ListingsGrid = ({
           >
             <Card className="w-[350px] ">
               <CardContent
-                className=" group pb-8 py-6 !px-0 mb-6
+                className=" group pb-8 py-6 !px-0 mb-2
                rounded-xl  relative"
               >
                 <Carousel className="w-[90%] relative overflow-hidden rounded-xl mx-auto">
-                  <div className="absolute top-1 z-10 right-1">
-                    <Favourite isFavour={e.isFavourated} listingId={e.id} />
-                  </div>
+                  {type !== "order" && (
+                    <div className="absolute top-1 z-10 right-1">
+                      <Favourite isFavour={e.isFavourated} listingId={e.id} />
+                    </div>
+                  )}
                   <CarouselContent className=" rounded-2xl ">
                     {e.images.map((el) => (
                       <CarouselItem
@@ -136,7 +143,10 @@ const ListingsGrid = ({
                     <div className="flexcenter gap-1">
                       <StarIcon className="fill-foreground  h-4 w-4" />
                       <span suppressHydrationWarning className="">
-                        {Math.max(Math.random() * 5, 3).toFixed(2)}{" "}
+                        {(
+                          e.reviews.reduce((a, b) => a + b, 0) /
+                          e.reviews.length
+                        ).toFixed(1)}{" "}
                       </span>
                     </div>
                   )}
@@ -212,13 +222,13 @@ const ListingsGrid = ({
                     <>
                       <span> Created At : </span> {e.createdAt}
                     </>
-                  ) : type === "trip" ? (
+                  ) : type === "trip" || type === "order" ? (
                     <>
                       <span> Reserved At : </span> {e.createdAt.toDateString()}
                     </>
                   ) : null}
                 </m.div>
-                {type === "trip" ? (
+                {type === "trip" || type === "order" ? (
                   <Button
                     disabled={loading.length > 0}
                     onClick={async () => {
@@ -233,17 +243,20 @@ const ListingsGrid = ({
                     )}
                   </Button>
                 ) : null}
-                {type === "trip" && (
-                  <>
-                    {e.isActive ? (
-                      <Badge className="bg-green-600">Trip in Progress</Badge>
-                    ) : !e.isActive && !e.isEnded ? (
-                      <Badge className=" bg-yellow-400">Trip Not Started</Badge>
-                    ) : !e.isActive && e.isEnded ? (
-                      <Badge className=" bg-orange-500">Trip ended</Badge>
-                    ) : null}
-                  </>
-                )}
+                {type === "trip" ||
+                  (type === "order" && (
+                    <>
+                      {e.isActive ? (
+                        <Badge className="bg-green-600">Trip in Progress</Badge>
+                      ) : !e.isActive && !e.isEnded ? (
+                        <Badge className=" bg-yellow-400">
+                          Trip Not Started
+                        </Badge>
+                      ) : !e.isActive && e.isEnded ? (
+                        <Badge className=" bg-orange-500">Trip ended</Badge>
+                      ) : null}
+                    </>
+                  ))}
               </CardFooter>
             </Card>
           </m.div>

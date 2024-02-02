@@ -6,10 +6,7 @@ export const RegisterSchema = z
       .string()
       .min(4, { message: "must be at least 4 characters long" })
       .max(10),
-    email: z
-      .string()
-      .min(4,)
-      .email(),
+    email: z.string().min(4).email(),
     password: z
       .string()
       .min(4, { message: "must be at least 8 characters long" })
@@ -23,17 +20,13 @@ export const RegisterSchema = z
     message: "Passwords don't match",
     path: ["confirm"],
   });
-  export const Loginschema = z
-  .object({
-    email: z
-      .string()
-      .min(4,)
-      .email(),
-    password: z
-      .string()
-      .min(4, { message: "must be at least 8 characters long" })
-      .max(14),
-  });
+export const Loginschema = z.object({
+  email: z.string().min(4).email(),
+  password: z
+    .string()
+    .min(4, { message: "must be at least 8 characters long" })
+    .max(14),
+});
 
 export const productSchema = z.object({
   name: z.string().min(4),
@@ -45,6 +38,10 @@ export const productSchema = z.object({
   isArchived: z.boolean(),
   isFeatured: z.boolean(),
   images: z.string().array().min(1),
+});
+export const reviewSchema = z.object({
+  message: z.string().min(4),
+  stars: z.number().min(1),
 });
 
 export const SetupSchema = z.object({
@@ -73,4 +70,3 @@ export const RentSchema = z.object({
   price: z.number().min(50),
   locationValue: countrySelectValue,
 });
-

@@ -163,3 +163,8 @@ html.lenis {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
+textarea {
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
