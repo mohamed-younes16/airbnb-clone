@@ -42,7 +42,6 @@ model Listing {
   locationValue String
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
-  reviews       Int           @default(0)
 }
 
 model Reservation {
@@ -52,8 +51,20 @@ model Reservation {
   listingId  String
   listing    Listing  @relation("reservation_listing", fields: [listingId], onDelete: Cascade, references: [id])
   totalPrice Int
+  totalDays  Int
   startDate  DateTime
-  endtDate   DateTime
+  endDate    DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  review     Review?  @relation("reservation_Review")
+}
+
+model Review {
+  id            String      @id @unique @default(cuid())
+  reservationId String      @unique
+  reservation   Reservation @relation("reservation_Review", fields: [reservationId], references: [id], onDelete: Cascade)
+  message       String      @default("")
+  stars         Int         @default(1)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }

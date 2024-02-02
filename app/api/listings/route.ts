@@ -15,7 +15,7 @@ export async function POST(req: Request) {
         locationValue: JSON.stringify(data.locationValue),
       },
     });
-    console.log(listingCreation);
+
     return NextResponse.json(
       { message: "Listing  Create successfully ✅", listingCreation },
       { status: 200 }

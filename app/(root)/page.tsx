@@ -28,7 +28,7 @@ export default async function Home() {
           </>
         )}
 
-        {fetchedData ? <ProductsGrid listings={fetchedData} /> : null}
+        {fetchedData ? <ProductsGrid type="listing" listings={fetchedData} /> : null}
       </div>
     </>
   );

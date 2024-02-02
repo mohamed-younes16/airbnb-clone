@@ -1,3 +1,5 @@
+import { Listing } from "@prisma/client";
+
 interface AuthenticationModalType {
   open: "login" | "register" | "";
   setOpen: (v: "login" | "register" | "") => void;
@@ -42,4 +44,33 @@ interface LocationValueType {
   latlang: number[];
   region: string;
   label: string;
+}
+
+interface ReservationInputType {
+  endDate: Date;
+  startDate: Date;
+  listingId: string;
+  totalPrice: number;
+  totalDays: number;
+}
+interface FetchedTripsType {
+  totalPrice: number;
+  isFavourated: boolean;
+  title: string;
+  id: string;
+  images: string[];
+  category: string;
+  createdAt: Date;
+  favouritedBy: {
+    id: string;
+  }[];
+  isActive:boolean
+  isEnded:boolean
+}
+
+interface ListingByIdType extends Listing {
+  owner: { username?: string | undefined; imageUrl?: string | undefined };
+  locationValue: LocationValueType;
+  isFavourated: boolean;
+  reservations: Reservation[];
 }

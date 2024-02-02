@@ -103,7 +103,7 @@ const NavBar = async () => {
     <>
       <div
         className=" pt-2   sticky 
-        transition-all w-full left-0  overflow-auto  z-20  rounded-b-md top-0 mb-6 dark:bg-zinc-800 bg-white px-4 
+        transition-all w-full left-0    z-20  rounded-b-md top-0 mb-6 dark:bg-zinc-800 bg-white px-4 
     "
       >
         <div className="h-full">

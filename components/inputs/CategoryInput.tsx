@@ -40,8 +40,8 @@ const CategoryInput = ({
           <p className="text-foreground/70">{description}</p>
 
           <div
-            className={`absolute transition-all  border-4 rounded-sm border-main bottom-0
-             h-full left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-1/2  ${
+            className={`absolute transition-all w-full  border-4 rounded-sm border-main bottom-0
+             h-full left-0 top-0  ${
                selected ? "scale-100 skew-x-0" : "skew-x-[60deg] scale-0 "
              }`}
           ></div>
@@ -61,13 +61,7 @@ const CategoryInput = ({
               {description}
             </p>
           </div>
-
-          <div
-            className={`absolute transition-all  border-4 rounded-sm border-main bottom-0
-           h-full left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-1/2  ${
-             selected ? "scale-100 skew-x-0" : "skew-x-[60deg] scale-0 "
-           }`}
-          ></div>
+      
         </div>
       )}
     </div>

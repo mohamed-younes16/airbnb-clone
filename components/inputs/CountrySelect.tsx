@@ -1,9 +1,7 @@
 "use client";
-
 import { useCounries } from "@/hooks/store";
-import Map from "../Map";
 import { SearchSelect, SearchSelectItem } from "@tremor/react";
-import Select from "react-select";
+import CliComponent from "../CliComponent";
 export interface countrySelectValue {
   flag: string;
   value: string;
@@ -20,9 +18,9 @@ const CountrySelect = ({
   value: countrySelectValue;
 }) => {
   const { getAll } = useCounries();
-console.log(getAll(),"############")
+
   return (
-    <div>
+    <CliComponent>
       <SearchSelect
         placeholder={value?.label}
         
@@ -45,7 +43,7 @@ console.log(getAll(),"############")
         ))}
       </SearchSelect>
 
-    </div>
+    </CliComponent>
   );
 };
 

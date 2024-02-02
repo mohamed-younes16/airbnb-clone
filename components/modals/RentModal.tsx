@@ -37,6 +37,7 @@ import { title } from "process";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RentSchema } from "@/models/Schemas/Setup";
 import { categoriesList } from "../navbar/NavBar";
+import CliComponent from "../CliComponent";
 enum STEPS {
   CATEGORY = 0,
   LOCATION = 1,
@@ -134,8 +135,8 @@ const RentModal = () => {
             description="Pick a category"
           />
 
-          <ScrollArea className=" gap-3   mt-6 w-full  ">
-            <div className="grid gap-6 max-h-[30dvh] grid-cols-2">
+          <ScrollArea className=" gap-3   overflow-auto  mt-6 w-full  ">
+            <div className="grid gap-6 max-h-[50dvh]  grid-cols-2">
               {categoriesList.map((e) => (
                 <CategoryInput
                   key={e.label}
@@ -168,7 +169,10 @@ const RentModal = () => {
               setValue("locationValue", e, { shouldTouch: true });
             }}
           />
-          <Map center={location?.latlang as LatLngExpression} />
+          <CliComponent>
+            <Map center={location?.latlang as LatLngExpression} />
+          </CliComponent>
+
           <ScrollArea className=" gap-3   mt-6 w-full  "></ScrollArea>
         </>
       );

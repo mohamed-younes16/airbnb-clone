@@ -1,7 +1,8 @@
 "use server";
 import prismadb from "@/lib/prismabd";
 import { currentUser } from "@clerk/nextjs";
-
+import { Listing, Reservation, User } from "@prisma/client";
+import { ListingByIdType, LocationValueType } from "..";
 
 export const ignoreKeys = (obj, keysToIgnore) => {
   const newObj = { ...obj };
@@ -47,16 +48,63 @@ export const getListingById = async (id: string) => {
 
   const data = await prismadb.listing.findFirst({
     where: { id },
-    include: { owner: { select: { username: true, imageUrl: true } } },
+    include: {
+      owner: { select: { username: true, imageUrl: true } },
+      reservations: { take: 1, orderBy: { createdAt: "desc" } },
+    },
+  });
+  console.log(data);
+  const userFavourites = new Set(user?.favourites.map((e) => e.id));
+  const dataReturned: ListingByIdType = {
+    ...data!,
+    isFavourated: userFavourites.has(data?.id || "") || false,
+    owner: { ...data?.owner },
+    locationValue: JSON.parse(data?.locationValue || "") as string &
+      LocationValueType,
+  };
+  console.log(dataReturned);
+  return dataReturned;
+};
+
+export const GetReservations = async () => {
+  const user = await currentUserDb();
+  const data = await prismadb.reservation.findMany({
+    where: { ownerId: user?.id },
+    include: {
+      listing: {
+        select: {
+          title: true,
+          images: true,
+          category: true,
+          favouritedBy: { select: { id: true } },
+          id: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  const userFavourites = new Set(user?.favourites.map((e) => e.id));
+  const dataFiltered = data?.map((e) => ({
+    ...e,
+
+    listing: {
+      ...e.listing,
+      isFavourated: userFavourites.has(e.listing.id) || false,
+    },
+  }));
+
+  return dataFiltered;
+};
+
+export const GetReservationById = async (id: string) => {
+  const user = await currentUserDb();
+  const data = await prismadb.reservation.findFirst({
+    where: { id, ownerId: user?.id },
+    include: {
+      listing: true,
+      review: { where: { reservationId: id }, take: 1 },
+    },
   });
 
-  const userFavourites = new Set(user?.favourites.map((e) => e.id));
-  const dataReturned = {
-    ...data,
-    isFavourated: userFavourites.has(data?.id || "") || false,
-    createdAt: data?.createdAt.toDateString()!,
-    owner: { ...data?.owner },
-    locationValue:JSON.parse((data?.locationValue || "" ) ) as LocationValueType
-  };
-  return dataReturned;
+  return data;
 };

@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const user = await currentUser();
-    console.log(user);
+
     if (!user) return new NextResponse("unauthorized", { status: 401 });
 
     const userdata = await prismadb.user.findFirst({

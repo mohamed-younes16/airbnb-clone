@@ -8,23 +8,62 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-
 import { formatedPrice } from "@/utils";
-import { StarIcon } from "lucide-react";
-import Image from "next/image";
+import { Loader2, StarIcon } from "lucide-react";
 import Link from "next/link";
 import { motion as m } from "framer-motion";
 import Favourite from "./Favourite";
 import ImageContainer from "./ImageContainer";
+import React, { useState } from "react";
+import { FetchedListingType, FetchedTripsType } from "..";
+import { Badge } from "./ui/badge";
+import axios from "axios";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-const ListingsGrid = ({ listings }: { listings: FetchedListingType[] }) => {
+const ListingsGrid = ({
+  listings,
+  type,
+}:
+  | {
+      listings: FetchedListingType[];
+      type: "listing";
+    }
+  | {
+      listings: FetchedTripsType[];
+      type: "trip";
+    }) => {
+  const router = useRouter();
+  const [loading, setIsLoading] = useState("");
+  const handleClick = async (id: string) => {
+    setIsLoading(id);
+    try {
+      const adding = axios.delete(`/api/reservation`, { data: { id } });
+      adding
+        .then(({ data: { message } }: { data: { message: string } }) => {
+          toast.dismiss();
+          toast.message(message);
+          router.refresh();
+        })
+        .catch((e) => {
+          toast.dismiss();
+          toast.error(e.response.data.message || "Error Happend");
+          console.log(e);
+        })
+        .finally(() => setIsLoading(""));
+      toast.dismiss();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className=" w-full">
       <div
         className="max-md:px-3 px-[40px] grid max-md:w-fit max-md:mx-auto 
       mt-6 gap-6 grid-cols-[repeat(auto-fill_,_minmax(300px_,1fr))] "
       >
-        {listings.map((e, i) => (
+        {listings.map((e, i: number) => (
           <m.div
             key={i}
             viewport={{ once: true }}
@@ -40,7 +79,7 @@ const ListingsGrid = ({ listings }: { listings: FetchedListingType[] }) => {
           >
             <Card className="w-[350px] ">
               <CardContent
-                className=" group  py-6 !px-0 mb-6
+                className=" group pb-8 py-6 !px-0 mb-6
                rounded-xl  relative"
               >
                 <Carousel className="w-[90%] relative overflow-hidden rounded-xl mx-auto">
@@ -66,8 +105,17 @@ const ListingsGrid = ({ listings }: { listings: FetchedListingType[] }) => {
                   <CarouselNext className="right-0  " />
                 </Carousel>
               </CardContent>
-              <Link className="block px-6" href={`/listing/${e.id}`}>
-                <div className="flex items-center justify-between w-full">
+              <Link
+                className="block px-6 "
+                href={`/${
+                  type == "listing"
+                    ? "listing"
+                    : type === "trip"
+                    ? "trips"
+                    : "reservations"
+                }/${e.id}`}
+              >
+                <div className="flex items-center justify-between w*full">
                   <m.p
                     viewport={{ once: true }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -84,12 +132,14 @@ const ListingsGrid = ({ listings }: { listings: FetchedListingType[] }) => {
                     {" "}
                     {e.title}
                   </m.p>
-                  <div className="flexcenter gap-1">
-                    <StarIcon className="fill-foreground  h-4 w-4" />
-                    <span suppressHydrationWarning className="">
-                      {Math.max(Math.random() * 5, 3).toFixed(2)}{" "}
-                    </span>
-                  </div>
+                  {type === "listing" && (
+                    <div className="flexcenter gap-1">
+                      <StarIcon className="fill-foreground  h-4 w-4" />
+                      <span suppressHydrationWarning className="">
+                        {Math.max(Math.random() * 5, 3).toFixed(2)}{" "}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <m.div
                   viewport={{ once: true }}
@@ -106,6 +156,7 @@ const ListingsGrid = ({ listings }: { listings: FetchedListingType[] }) => {
                 >
                   {e.category}
                 </m.div>
+
                 <div className="my-2">
                   <m.div
                     viewport={{ once: true }}
@@ -120,18 +171,30 @@ const ListingsGrid = ({ listings }: { listings: FetchedListingType[] }) => {
                     className="font-bold flex gap-1"
                     initial={{ opacity: 0, x: -100 }}
                   >
-                    {formatedPrice(e.price)}
-                    <span className=" text-neutral-500   !font-normal">
-                      per Night
-                    </span>
+                    {type === "listing" ? (
+                      <>
+                        {formatedPrice(e.price)}
+                        <span className=" text-neutral-500   !font-normal">
+                          per Night
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Total Price :</span>
+                        {formatedPrice(e.totalPrice)}
+                      </>
+                    )}
                   </m.div>
                 </div>
               </Link>
+
               <CardFooter className="flex-col items-start gap-2">
-                <Link href={`/listing/${e.id}`}>
-                  {" "}
-                  <Button>Check it Out</Button>
-                </Link>
+                {type === "listing" && (
+                  <Link href={`/listing/${e.id}`}>
+                    {" "}
+                    <Button>Check it Out</Button>
+                  </Link>
+                )}
                 <m.div
                   viewport={{ once: true }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -145,8 +208,42 @@ const ListingsGrid = ({ listings }: { listings: FetchedListingType[] }) => {
                   className=" text-neutral-500   flex gap-1"
                   initial={{ opacity: 0, x: -100 }}
                 >
-                  <span> Created At : </span> {e.createdAt}
+                  {type === "listing" ? (
+                    <>
+                      <span> Created At : </span> {e.createdAt}
+                    </>
+                  ) : type === "trip" ? (
+                    <>
+                      <span> Reserved At : </span> {e.createdAt.toDateString()}
+                    </>
+                  ) : null}
                 </m.div>
+                {type === "trip" ? (
+                  <Button
+                    disabled={loading.length > 0}
+                    onClick={async () => {
+                      handleClick(e.id);
+                    }}
+                    className="bg-main hover:text-background text-white w-full font-bold mt-8"
+                  >
+                    {loading === e.id ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      "Delete Trip"
+                    )}
+                  </Button>
+                ) : null}
+                {type === "trip" && (
+                  <>
+                    {e.isActive ? (
+                      <Badge className="bg-green-600">Trip in Progress</Badge>
+                    ) : !e.isActive && !e.isEnded ? (
+                      <Badge className=" bg-yellow-400">Trip Not Started</Badge>
+                    ) : !e.isActive && e.isEnded ? (
+                      <Badge className=" bg-orange-500">Trip ended</Badge>
+                    ) : null}
+                  </>
+                )}
               </CardFooter>
             </Card>
           </m.div>

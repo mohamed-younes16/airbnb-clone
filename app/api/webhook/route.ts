@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     //   },
     //   include: { items: true },
     // });
-    console.log(order)
+
    
   } return new NextResponse(null, { status: 200 });
 }

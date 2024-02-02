@@ -52,7 +52,7 @@ const Favourite = ({
       ) : (
         <Heart
           className={` border-background w-6 h-6 ${
-            isFavourated ? "fill-main" : "fill-foreground/80 "
+            isFavourated ? "fill-main" : "fill-zinc-700/80 "
           }`}
         />
       )}

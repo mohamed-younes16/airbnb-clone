@@ -9,7 +9,6 @@ import { GeistMono } from "geist/font/mono";
 import { currentUserDb } from "@/actions";
 import CheckUser from "@/components/CheckUser";
 
-
 export const metadata = {
   title: "airbnb-clone",
   description: "airbnb-clone by younes",
@@ -36,7 +35,6 @@ export default async function RootLayout({
             enableSystem
             storageKey="admin-theme"
           >
-            
             <div
               className="  min-h-screen  transition-all 
           bg-cover bg-[url(/assets/bg-light.svg)] bg-white dark:bg-[url(/assets/dark-bg.svg)]   dark:bg-transparent bg-[#3e3e3efc]
