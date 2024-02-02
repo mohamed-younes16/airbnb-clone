@@ -1,8 +1,7 @@
 "use server";
 import prismadb from "@/lib/prismabd";
 import { currentUser } from "@clerk/nextjs";
-import { Listing, Reservation, User } from "@prisma/client";
-import { FetchedListingType, ListingByIdType, LocationValueType } from "..";
+import {  ListingByIdType, LocationValueType } from "..";
 
 export const ignoreKeys = (obj, keysToIgnore) => {
   const newObj = { ...obj };

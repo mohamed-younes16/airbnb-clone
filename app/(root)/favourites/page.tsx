@@ -1,4 +1,4 @@
-import { getListings, getListingsFavourated } from "@/actions";
+import { getListingsFavourated } from "@/actions";
 import Heading from "@/components/Heading";
 import ProductsGrid from "@/components/ListingsGrid";
 import { TbZoomCancel } from "react-icons/tb";

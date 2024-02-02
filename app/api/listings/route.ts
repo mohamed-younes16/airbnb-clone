@@ -1,3 +1,4 @@
+import { ListingType } from "@/index";
 import prismadb from "@/lib/prismabd";
 import { currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";

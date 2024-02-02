@@ -1,10 +1,12 @@
 import { getListingById } from "@/actions";
 import Heading from "@/components/Heading";
 import Favourite from "@/components/Favourite";
-import ImagesShow from "./components/ImageShow";
+
 import { DatePickerWithRange } from "@/components/inputs/DatePickerWithRange";
 import ListingShowCase from "@/components/ListingShowCase";
-import { auth, currentUser } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
+import ImagesShow from "@/components/ImageShow";
+
 
 const page = async ({
   params: { listingId },

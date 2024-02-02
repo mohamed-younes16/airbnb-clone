@@ -1,6 +1,7 @@
 import { SignUp } from "@clerk/nextjs";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import MenuItem from "../navbar/MenuItem";
+import { AuthenticationModalType } from "@/index";
 
 const RegisterModal = ({ open, setOpen }: AuthenticationModalType) => {
   return (

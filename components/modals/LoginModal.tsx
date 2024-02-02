@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import MenuItem from "../navbar/MenuItem";
 import { SignIn } from "@clerk/nextjs";
+import { AuthenticationModalType } from "@/index";
 
 const LoginModal = ({
   setOpen,

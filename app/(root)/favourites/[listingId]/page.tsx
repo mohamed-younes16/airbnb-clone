@@ -1,16 +1,17 @@
 import { getListingById } from "@/actions";
 import Heading from "@/components/Heading";
 import Favourite from "@/components/Favourite";
-import ImagesShow from "./components/ImageShow";
+
 import { DatePickerWithRange } from "@/components/inputs/DatePickerWithRange";
 import ListingShowCase from "@/components/ListingShowCase";
+import ImagesShow from "@/components/ImageShow";
 
 const page = async ({
   params: { listingId },
 }: {
   params: { listingId: string };
 }) => {
-  const listing  = await getListingById(listingId);
+  const listing = await getListingById(listingId);
   const images = listing?.images;
 
   const fromDate =
@@ -34,7 +35,7 @@ const page = async ({
           </div>
 
           <div className="flex gap-2 mt-8 ">
-            <ListingShowCase listing={listing } />
+            <ListingShowCase listing={listing} />
             <div>
               <DatePickerWithRange
                 fromDate={fromDate}
