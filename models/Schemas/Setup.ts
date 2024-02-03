@@ -40,7 +40,9 @@ export const productSchema = z.object({
   images: z.string().array().min(1),
 });
 export const reviewSchema = z.object({
-  message: z.string().min(4),
+  message: z
+    .string()
+    .min(4, { message: "message must at least be 5 letters long" }),
   stars: z.number().min(1),
 });
 

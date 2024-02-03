@@ -28,7 +28,7 @@ const Counter = ({
       <div className="flexcenter gap-2">
         <div>{icon}</div>
         <div>
-          <h3 className=" text-xl max-md:text-lg basis-2/3  font-bold">
+          <h3 className=" text-xl max-md:text-lg max-sm:text-base basis-2/3  font-bold">
             {title}{" "}
           </h3>
           <p className="text-muted-foreground  max-md:text-sm text-lg">
@@ -36,23 +36,25 @@ const Counter = ({
           </p>
         </div>
       </div>
-      <div className="flexcenter gap-3">
+      <div className="flexcenter max-sm:gap-1 gap-3">
         <Button
           disabled={counter === 1}
           onClick={() => onChange(Math.max(counter - 1, 1))}
           variant={"outline"}
-          className="rounded-full active:scale-95  hover:scale-105 transition-all !w-12 !p-0 !h-12"
+          className="rounded-full active:scale-95 
+           hover:scale-105 transition-all w-12  max-sm:!h-6 !p-0 max-sm:!w-6 h-12"
         >
           <MinusCircleIcon />
         </Button>
-        <p className="text-2xl  max-md:text-lg max-md:w-7 w-10 text-center">
+        <p className="text-2xl max-md:text-xl max-sm:text-base  max-sm:w-7  w-10 text-center">
           {counter}{" "}
         </p>
         <Button
           disabled={counter === max}
           onClick={() => onChange(Math.min(counter + 1, max))}
           variant={"outline"}
-          className="rounded-full active:scale-95  hover:scale-105 transition-all  !w-12 !p-0 !h-12"
+          className="rounded-full active:scale-95 
+           hover:scale-105 transition-all  w-12  max-sm:!h-6 !p-0 max-sm:!w-6 h-12"
         >
           <PlusCircleIcon />
         </Button>

@@ -7,11 +7,11 @@ import ListingShowCase from "@/components/ListingShowCase";
 import ImagesShow from "@/components/ImageShow";
 
 const page = async ({
-  params: { listingId },
+  params: { favouriteId },
 }: {
-  params: { listingId: string };
+  params: { favouriteId: string };
 }) => {
-  const listing = await getListingById(listingId);
+  const listing = await getListingById(favouriteId);
   const images = listing?.images;
 
   const fromDate =
@@ -28,7 +28,10 @@ const page = async ({
               title={listing.title || ""}
               description={listing.category || ""}
             />
-            <Favourite isFavour={listing.isFavourated} listingId={listingId} />
+            <Favourite
+              isFavour={listing.isFavourated}
+              listingId={favouriteId}
+            />
           </div>
           <div className="  h-[55dvh] max-lg:h-[30dvh] max-xl:h-[40dvh]">
             <ImagesShow images={images || []} />
@@ -39,7 +42,7 @@ const page = async ({
             <div>
               <DatePickerWithRange
                 fromDate={fromDate}
-                listingId={listingId}
+                listingId={favouriteId}
                 price={listing.price || 0}
               />
             </div>

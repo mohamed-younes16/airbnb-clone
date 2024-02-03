@@ -10,6 +10,7 @@ const ListingShowCase = ({ listing }: { listing: ListingByIdType }) => {
   const categorie = categoriesList.find(
     (e) => e.label.toLocaleLowerCase() === listing.category?.toLocaleLowerCase()
   );
+
   return (
     <div className=" space-y-2">
       <p className=" text-2xl font-semibold">{listing.title}</p>
@@ -20,6 +21,12 @@ const ListingShowCase = ({ listing }: { listing: ListingByIdType }) => {
       </div>
       <div className="flex  items-center gap-2">
         <Star className=" fill-foreground " />
+        <span suppressHydrationWarning className="">
+                        {(
+                          listing.reviews.reduce((a, b) => a + b, 0) /
+                          listing.reviews.length
+                        ).toFixed(1)}{" "}
+                      </span>
         {/* <Link
           className=" flexcenter font-semibold gap-1 underline"
           href={`/listing/${listingId}/reviews`}

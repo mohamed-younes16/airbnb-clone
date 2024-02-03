@@ -19,6 +19,7 @@ import { FaSkiing } from "react-icons/fa";
 import { BsSnow } from "react-icons/bs";
 import { IoDiamond } from "react-icons/io5";
 import { MdOutlineVilla } from "react-icons/md";
+import { continentsType } from "@/index";
 export const categoriesList = [
   {
     label: "Beach",
@@ -96,6 +97,32 @@ export const categoriesList = [
     description: "This property is brand new and luxurious!",
   },
 ];
+export const regions: continentsType[] = [
+  {
+    continent: "World",
+    image: "/world.svg",
+  },
+  {
+    continent: "America",
+    image: "/america.svg",
+  },
+  {
+    continent: "Oceania",
+    image: "/oceania.svg",
+  },
+  {
+    continent: "Europe",
+    image: "/europe.svg",
+  },
+  {
+    continent: "Africa",
+    image: "/africa.svg",
+  },
+  {
+    continent: "Asia",
+    image: "/asia.svg",
+  },
+];
 const NavBar = async () => {
   const currentUserData = await currentUserDb();
 
@@ -107,7 +134,7 @@ const NavBar = async () => {
     "
       >
         <div className="h-full">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between max-sm:justify-center items-center">
             <Link href={"/"} className="flex lg:flex-1 items-center gap-6 ">
               <Image
                 alt=""
@@ -124,9 +151,11 @@ const NavBar = async () => {
                 src={"/assets/icon.svg"}
               />
             </Link>
-            <Search userData={currentUserData!} />
+            <Search continents={regions} userData={currentUserData!} />
           </div>
-          <Categories />
+          <div className="min-h-[50px]">
+            <Categories />
+          </div>
         </div>
       </div>
     </>

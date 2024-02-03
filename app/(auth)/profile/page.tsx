@@ -13,7 +13,6 @@ import ProfileForm from "@/components/forms/ProfileForm";
 import TooltipComp from "@/components/ui/TooltipComp";
 import { currentUserDb } from "@/actions";
 import SignOutButton from "@/components/inputs/SignOutButton";
-import { SignedIn } from "@clerk/nextjs";
 
 const Page = async () => {
   const CurrentUserData = await currentUserDb();

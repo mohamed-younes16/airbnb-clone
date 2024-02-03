@@ -28,7 +28,7 @@ export default async function RootLayout({
         lang="en"
         className={`${GeistSans.variable} ${GeistMono.variable} overflow-x-hidden`}
       >
-        <body className="  overflow-x-hidden">
+        <body className=" overflow-x-hidden">
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -37,7 +37,7 @@ export default async function RootLayout({
           >
             <div
               className="  min-h-screen  transition-all 
-          bg-cover bg-[url(/assets/bg-light.svg)] bg-white dark:bg-[url(/assets/dark-bg.svg)]   dark:bg-transparent bg-[#3e3e3efc]
+          bg-cover bg-[url(/assets/bg-light.svg)] max-sm:pb-24  bg-white dark:bg-[url(/assets/dark-bg.svg)]   dark:bg-transparent bg-[#3e3e3efc]
             
           "
             >

@@ -1,7 +1,16 @@
 "use client";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
-const ImageContainer = ({ src, alt }: { src: string; alt?: string }) => {
+const ImageContainer = ({
+  src,
+  alt,
+  className,
+}: {
+  src: string;
+  alt?: string;
+  className?: string;
+}) => {
   const [isLoaded, setIsloaded] = useState(false);
   return (
     <div className=" w-full relative h-full">
@@ -17,9 +26,12 @@ const ImageContainer = ({ src, alt }: { src: string; alt?: string }) => {
         onLoad={() => setIsloaded(true)}
         height={100}
         width={100}
-        className={`object-cover transition-all  duration-1000 h-full w-full ${
-          !isLoaded && "opacity-0"
-        }`}
+        className={cn(
+          `object-cover transition-all  duration-1000 h-full w-full ${
+            !isLoaded && "opacity-0"
+          }`,
+          className
+        )}
         src={src}
         alt={alt || ""}
       />

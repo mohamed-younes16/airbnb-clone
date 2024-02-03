@@ -1,8 +1,8 @@
 "use server";
 import prismadb from "@/lib/prismabd";
 import { currentUser } from "@clerk/nextjs";
-import {  ListingByIdType, LocationValueType } from "..";
-
+import { ListingByIdType, LocationValueType } from "..";
+const continentsList = ["America", "Oceania", "Europe", "Africa", "Asia"];
 export const ignoreKeys = (obj, keysToIgnore) => {
   const newObj = { ...obj };
   keysToIgnore.forEach((key) => delete newObj[key]);
@@ -28,38 +28,40 @@ export const currentClerkUser = async () => {
 export const getListings = async ({
   guestCount = 1,
   continent = "",
+  bathsCount = 1,
+  category = "",
 }: {
   guestCount?: number;
-  continent: string;
+  continent?: string;
+  bathsCount?: number;
+  category?: string;
 }) => {
   const user = await currentUserDb();
-  console.log({
-    guestCount,
-    continent,
+  const isInList = continentsList.some(
+    (e) => e.toLocaleLowerCase() === continent.toLocaleLowerCase()
+  );
+  const locationSearch = isInList ? { search: continent } : {};
+  const data = await prismadb.listing.findMany({
+    where: {
+      guestCount: { gte: guestCount },
+      bathroomCount: { gte: bathsCount },
+      locationValue: { ...locationSearch, mode: "insensitive" },
+      category: { contains: category.toLocaleLowerCase() },
+    },
+
+    take: 10,
+    orderBy: { createdAt: "desc" },
+    include: {
+      reservations: { select: { review: { select: { stars: true } } } },
+    },
   });
-
-  const locationSearch = continent ? { search: continent } : {};
-  const data =
-    user &&
-    (await prismadb.listing.findMany({
-      where: {
-        guestCount: { gte: guestCount },
-        locationValue: { ...locationSearch, mode: "insensitive" },
-      },
-
-      take: 10,
-      orderBy: { createdAt: "desc" },
-      include: {
-        reservations: { select: { review: { select: { stars: true } } } },
-      },
-    }));
   const userFavourites = new Set(user?.favourites.map((e) => e.id));
   const dataFiltered = data?.map((e) => ({
     ...e,
     isFavourated: userFavourites.has(e.id) || false,
     createdAt: e.createdAt.toDateString(),
-    reviews: e.reservations.map((e) => e.review?.stars!),
-  }))!;
+    reviews: e.reservations.map((e) => e.review?.stars!).filter((e) => e && e),
+  }));
   return dataFiltered;
 };
 export const getListingsFavourated = async () => {
@@ -95,6 +97,11 @@ export const getListingById = async (id: string) => {
     },
   });
 
+  const reviews = await prismadb.review.findMany({
+    where: { reservation: { listingId: id } },
+    select: { stars: true, message: true },
+  });
+
   const userFavourites = new Set(user?.favourites.map((e) => e.id));
   const dataReturned: ListingByIdType = {
     ...data!,
@@ -102,6 +109,7 @@ export const getListingById = async (id: string) => {
     owner: { ...data?.owner },
     locationValue: JSON.parse(data?.locationValue || "") as string &
       LocationValueType,
+    reviews: reviews.map((e) => e.stars),
   };
 
   return dataReturned;

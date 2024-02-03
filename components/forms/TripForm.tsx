@@ -11,6 +11,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
 import axios from "axios";
@@ -30,16 +31,14 @@ const TripForm = ({
   review: Review | null;
   userData: { username: string; imageUrl: string };
 }) => {
-  const [isSub, setIsSub] = useState(false);
   const [stars, setstars] = useState(review?.stars || 5);
   const form = useForm<z.infer<typeof reviewSchema>>({
     resolver: zodResolver(reviewSchema),
-    defaultValues: { stars: 5, message: review?.message },
+    defaultValues: { stars: review?.stars || 5, message: review?.message },
   });
   const router = useRouter();
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   async function onSubmit(values: z.infer<typeof reviewSchema>) {
-    setIsSub(true);
     try {
       const adding = axios.post(`/api/reservation/review`, {
         ...values,
@@ -49,22 +48,17 @@ const TripForm = ({
       adding
         .then((e) => {
           toast.dismiss();
-          setIsSub(false);
-          router.refresh();
           toast.success(e.data.message, { invert: true });
+          window.location.reload();
         })
         .catch((e) => {
           toast.dismiss();
-          setIsSub(false);
-
-          toast.error(e.response.data.message || "Error Happend", {
-            invert: true,
-          });
+          toast.error(e.response.data.message || "Error Happend");
           console.log(e);
-        });
-      setIsSub(false);
+        })
+        .finally(() => setIsLoading(false));
     } catch (error) {
-      setIsSub(false);
+      setIsLoading(false);
       console.log(error);
     }
   }
@@ -74,15 +68,15 @@ const TripForm = ({
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="mt-6 space-y-8
-          backdrop-blur-md rounded-xl max-w-6xl mx-auto  border-accent border-[1px] p-8 "
+          backdrop-blur-md rounded-xl max-w-6xl mx-auto  border-accent border-[1px] p-8 max-sm:p-4 "
         >
           <div className=" gap-6justify-start w-full ">
-            <div className="flex justify-between mb-9">
+            <div className="flex max-sm:flex-col items-center  justify-between mb-9">
               <div className="flex items-center gap-4">
-                <div className="relative rounded-full h-14 w-14 overflow-hidden">
+                <div className="relative rounded-full h-14 w-14 min-w-14 overflow-hidden">
                   <ImageContainer alt="your image" src={userData.imageUrl} />
                 </div>
-                <p className="font-bold capitalize text-2xl">
+                <p className="font-bold text-nowrap capitalize text-2xl">
                   {userData.username}
                 </p>
               </div>
@@ -101,7 +95,7 @@ const TripForm = ({
                                 shouldDirty: true,
                               });
                             }}
-                            className=" transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                            className=" transition-all max-sm:mt-4 hover:scale-110 active:scale-95 cursor-pointer"
                           >
                             <Star
                               className={`${
@@ -129,6 +123,7 @@ const TripForm = ({
                       placeholder="Type your message here."
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -137,17 +132,17 @@ const TripForm = ({
           {form.formState.isDirty && (
             <div className="flex items-center gap-6 justify-start">
               <Button
+                onClick={() => setIsLoading(true)}
                 type="submit"
-                disabled={isSub || form.formState.isSubmitting}
                 className={`${
-                  isSub ? " bg-foreground" : ""
+                  isLoading ? " bg-foreground" : ""
                 } flexcenter w-full gap-6`}
               >
-                {isSub ||
+                {isLoading ||
                   (form.formState.isSubmitting && (
                     <Loader2 className="h-6 w-6 animate-spin " />
                   ))}
-                {isSub || form.formState.isSubmitting ? (
+                {isLoading || form.formState.isSubmitting ? (
                   <Loader2 className="h-6 w-6 animate-spin " />
                 ) : (
                   "Submit"

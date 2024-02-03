@@ -74,4 +74,11 @@ interface ListingByIdType extends Listing {
   locationValue: LocationValueType;
   isFavourated: boolean;
   reservations: Reservation[];
+  reviews: number[];
 }
+
+interface continentsType {
+  continent: string;
+  image: string;
+}
+

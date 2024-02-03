@@ -9,13 +9,19 @@ import Link from "next/link";
 export default async function Home({
   searchParams,
 }: {
-  searchParams: { guests: string; continent: string };
+  searchParams: {
+    guests: string;
+    continent: string;
+    baths: string;
+    category: string;
+  };
 }) {
-  console.log(searchParams);
   const fetchedData =
     (await getListings({
+      bathsCount: +searchParams?.baths || 1,
       guestCount: +searchParams?.guests || 1,
       continent: searchParams.continent || "",
+      category: searchParams.category || "",
     })) || [];
 
   return (
