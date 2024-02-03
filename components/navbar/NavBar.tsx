@@ -151,7 +151,11 @@ const NavBar = async () => {
                 src={"/assets/icon.svg"}
               />
             </Link>
-            <Search continents={regions} userData={currentUserData!} />
+            <Search
+    
+              continents={regions}
+              userData={currentUserData!}
+            />
           </div>
           <div className="min-h-[50px]">
             <Categories />

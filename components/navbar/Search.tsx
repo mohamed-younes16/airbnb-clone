@@ -9,7 +9,7 @@ import {
   SearchIcon,
   User as UserIcon,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ModeToggle } from "../ui/themeButton";
 import {
   Popover,
@@ -69,44 +69,6 @@ const ListItem = React.forwardRef<
     </li>
   );
 });
-
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-];
 
 export const NavigationMenuDemo = ({
   continents,
@@ -187,11 +149,7 @@ export const NavigationMenuDemo = ({
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem
-         
-          value="nd"
-          onClick={() => setValue("nd")}
-        >
+        <NavigationMenuItem value="nd" onClick={() => setValue("nd")}>
           <NavigationMenuTrigger className="!p-0">
             {" "}
             <div className=" mx-3 transition-all hover:text-main ">
@@ -260,8 +218,10 @@ export const NavigationMenuDemo = ({
             ml-6 flexcenter bg-main
            ${value && "gap-1 max-sm:px-1"}`}
         >
-          
-          <SearchIcon strokeWidth={3} className="h-6 max-sm:w-4 max-sm:h-4 w-6" />
+          <SearchIcon
+            strokeWidth={3}
+            className="h-6 max-sm:w-4 max-sm:h-4 w-6"
+          />
           {
             <p
               className={` transition-all overflow-hidden ${
@@ -284,9 +244,16 @@ const Search = ({
   userData: User | null;
   continents: continentsType[];
 }) => {
-  const [open, setOpen] = useState<"login" | "register" | "">("");
+  const searchParams = useSearchParams();
+  const [open, setOpen] = useState<"login" | "register" | "">(
+    searchParams.get("redirected") === "true" ? "login" : ""
+  );
   const [popopen, setpopopen] = useState(false);
   const { setisRentModalOpen } = useStore();
+  useEffect(() => {
+    setpopopen(searchParams.get("redirected") === "true" && !userData);
+    setOpen(searchParams.get("redirected") === "true" ? "login" : "");
+  }, []);
 
   return (
     <>

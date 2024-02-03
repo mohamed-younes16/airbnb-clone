@@ -19,22 +19,18 @@ const ListingShowCase = ({ listing }: { listing: ListingByIdType }) => {
         <span>Rooms: {listing.roomCount}</span>
         <span>Bathrooms: {listing.bathroomCount}</span>
       </div>
-      <div className="flex  items-center gap-2">
-        <Star className=" fill-foreground " />
-        <span suppressHydrationWarning className="">
-                        {(
-                          listing.reviews.reduce((a, b) => a + b, 0) /
-                          listing.reviews.length
-                        ).toFixed(1)}{" "}
-                      </span>
-        {/* <Link
-          className=" flexcenter font-semibold gap-1 underline"
-          href={`/listing/${listingId}/reviews`}
-        >
-          <span>{listing.reviews} </span>
-          Review
-        </Link> */}
-      </div>
+      {listing.reviews.length > 0 ? (
+        <div className="flex  items-center gap-2">
+          <Star className=" fill-foreground " />
+          <span suppressHydrationWarning className="">
+            {(
+              listing.reviews.reduce((a, b) => a + b, 0) /
+              listing.reviews.length
+            ).toFixed(1)}
+          </span>
+        </div>
+      ) : null}
+
       <div className="border-y border-foreground/40 !my-10 py-6 flex items-center gap-6">
         <div className="rounded-full overflow-hidden w-10 h-10">
           <ImageContainer src={listing.owner.imageUrl || ""} />

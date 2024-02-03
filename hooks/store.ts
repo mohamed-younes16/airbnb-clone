@@ -15,6 +15,8 @@ type Store = {
   setisRentModalOpen: (v: boolean) => void;
   requests: number;
   setRequests: (v: number) => void;
+  isLoginModalOpen: boolean;
+  setisLoginModalOpen: (v: boolean) => void;
 };
 
 export const useStore = create<Store>()(
@@ -24,6 +26,8 @@ export const useStore = create<Store>()(
       setisRentModalOpen: (v: boolean) => set(() => ({ isRentModalOpen: v })),
       requests: 0,
       setRequests: (v: number) => set(() => ({ requests: v })),
+      isLoginModalOpen: false,
+      setisLoginModalOpen: (v: boolean) => set(() => ({ isRentModalOpen: v })),
     }),
     { name: "data", storage: createJSONStorage(() => sessionStorage) }
   )
@@ -47,5 +51,5 @@ export const useCounries = () => {
   const getByValue = (value: string) => {
     return formattedCountries.find((e) => e.value === value);
   };
-  return {getAll,getByValue}
+  return { getAll, getByValue };
 };

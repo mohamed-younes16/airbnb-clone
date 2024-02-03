@@ -142,7 +142,7 @@ const ListingsGrid = ({
                     {" "}
                     {e.title}
                   </m.p>
-                  {type === "listing" && (
+                  {type === "listing" && e.reviews.length > 0 ? (
                     <div className="flexcenter gap-1">
                       <StarIcon className="fill-foreground  h-4 w-4" />
                       <span suppressHydrationWarning className="">
@@ -152,7 +152,7 @@ const ListingsGrid = ({
                         ).toFixed(1)}{" "}
                       </span>
                     </div>
-                  )}
+                  ) : null}
                 </div>
                 <m.div
                   viewport={{ once: true }}

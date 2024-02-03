@@ -22,7 +22,7 @@ export default async function RootLayout({
   const user = await currentUserDb();
 
   return (
-    <ClerkProvider>
+    <ClerkProvider  signInUrl="/">
       <html
         suppressHydrationWarning
         lang="en"

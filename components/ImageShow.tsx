@@ -72,7 +72,7 @@ const ImagesShow = ({ images }: { images: string[] }) => {
               </Button>
             </DrawerTrigger>
             <DrawerContent className=" px-3 h-[90dvh]">
-              <ScrollArea>
+              <ScrollArea className=" overflow-auto">
                 <DrawerHeader>
                   <DrawerTitle>Images</DrawerTitle>
                   <DrawerDescription>
