@@ -76,7 +76,7 @@ const ImagesShow = ({ images }: { images: string[] }) => {
                 <DrawerHeader>
                   <DrawerTitle>Images</DrawerTitle>
                   <DrawerDescription>
-                    This action cannot be undone.
+                   images gallery
                   </DrawerDescription>
                 </DrawerHeader>
                 <ImagesShowComponent />
