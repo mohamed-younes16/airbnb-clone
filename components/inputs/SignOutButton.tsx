@@ -10,7 +10,7 @@ const SignOutButton = ({ children }: { children: ReactNode }) => {
 
   return (
     <SignedIn>
-      <button onClick={() => signOut(() => router.push("/"))}>
+      <button  className="w-full" onClick={() => signOut(() => router.push("/"))}>
         {children}{" "}
       </button>
     </SignedIn>

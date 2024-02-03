@@ -4,6 +4,7 @@ import {
   Album,
   Bath,
   Crown,
+  LucideLogOut,
   Menu,
   PlaneTakeoff,
   SearchIcon,
@@ -44,6 +45,7 @@ import queryString from "query-string";
 import { continentsType } from "@/index";
 import ImageContainer from "../ImageContainer";
 import Heading from "../Heading";
+import SignOutButton from "../inputs/SignOutButton";
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
@@ -355,6 +357,16 @@ const Search = ({
                   <ModeToggle>Theme</ModeToggle>
                 </div>
               </MenuItem>
+              <SignedIn>
+                {" "}
+                <MenuItem className=" text-red-600" onclick={() => {}}>
+                  <SignOutButton>
+                    <div className="flex w-full gap-1 items-center">
+                      <LucideLogOut className="h-6 w-6 " /> Logout
+                    </div>
+                  </SignOutButton>
+                </MenuItem>
+              </SignedIn>
             </PopoverContent>
           </Popover>
         </div>
