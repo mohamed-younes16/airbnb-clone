@@ -5,12 +5,15 @@ import { SignIn } from "@clerk/nextjs";
 import { AuthenticationModalType } from "@/index";
 import { dark } from "@clerk/themes";
 import { useTheme } from "next-themes";
+import { useStore } from "@/hooks/store";
 const LoginModal = ({ setOpen, open }: AuthenticationModalType) => {
   const { theme } = useTheme();
+  const { isLoginModalOpen } = useStore();
   const themeOpts = theme == "light" ? {} : { baseTheme: dark };
+  console.log(isLoginModalOpen)
   return (
     <Dialog
-      open={open === "login"}
+      open={open === "login" || isLoginModalOpen}
       onOpenChange={(e) => {
         e && setOpen("login");
         !e && setOpen("");

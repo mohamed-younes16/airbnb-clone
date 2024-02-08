@@ -62,22 +62,25 @@ const ImagesShow = ({ images }: { images: string[] }) => {
       ) : (
         <div className=" md:hidden">
           <Drawer>
-            <DrawerTrigger className=" w-full  relative  h-[55dvh] max-lg:h-[30dvh] max-xl:h-[40dvh] mx-auto rounded-xl overflow-hidden">
-              <ImageContainer src={images[0]} />
-              <Button
-                variant={"secondary"}
-                className="absolute bottom-2 right-2 rounded-full"
-              >
-                1/{images.length}
-              </Button>
+            <DrawerTrigger
+              asChild
+              className=" w-full  relative  h-[55dvh] max-lg:h-[30dvh] max-xl:h-[40dvh] mx-auto rounded-xl overflow-hidden"
+            >
+              <div>
+                <ImageContainer src={images[0]} />
+                <Button
+                  variant={"secondary"}
+                  className="absolute bottom-2 right-2 rounded-full"
+                >
+                  1/{images.length}
+                </Button>
+              </div>
             </DrawerTrigger>
             <DrawerContent className=" px-3 h-[90dvh]">
               <ScrollArea className=" overflow-auto">
                 <DrawerHeader>
                   <DrawerTitle>Images</DrawerTitle>
-                  <DrawerDescription>
-                   images gallery
-                  </DrawerDescription>
+                  <DrawerDescription>images gallery</DrawerDescription>
                 </DrawerHeader>
                 <ImagesShowComponent />
               </ScrollArea>{" "}

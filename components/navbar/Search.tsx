@@ -1,6 +1,5 @@
 "use client";
 import {
-  ActivityIcon,
   Album,
   Bath,
   Crown,
@@ -174,9 +173,9 @@ export const NavigationMenuDemo = ({
           flex-wrap gap-3 p-6 `}
             >
               {continents.map((e) => (
-                <>
-                  {" "}
+            
                   <div
+                  key={e.image}
                     className={`max-md:!min-w-[120px] max-md:!max-w-[120px]
                      md:min-w-[150px] md:max-w-[150px] h-[8rem]  group
             p-2 cursor-pointer transition-all gap-3  `}
@@ -205,8 +204,8 @@ export const NavigationMenuDemo = ({
                       {e.continent}
                     </p>
                   </div>
-                  {/* <Separator className=" my-2 md:hidden w-full"/> */}
-                </>
+            
+              
               ))}
             </ul>
           </NavigationMenuContent>
@@ -251,11 +250,16 @@ const Search = ({
     searchParams.get("redirected") === "true" ? "login" : ""
   );
   const [popopen, setpopopen] = useState(false);
-  const { setisRentModalOpen } = useStore();
+  const { setisRentModalOpen, setisLoginModalOpen } = useStore();
+
   useEffect(() => {
-    setpopopen(searchParams.get("redirected") === "true" && !userData);
+    setisLoginModalOpen(
+      searchParams.get("redirected") === "true" && userData === null
+    );
+    setpopopen(searchParams.get("redirected") === "true" && userData === null);
     setOpen(searchParams.get("redirected") === "true" ? "login" : "");
-  }, []);
+    return ()=>console.log('hjhhhh')
+  }, [searchParams]);
 
   return (
     <>
