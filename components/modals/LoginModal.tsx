@@ -27,7 +27,7 @@ const LoginModal = ({ setOpen, open }: AuthenticationModalType) => {
         <SignIn
           appearance={{
             elements: {
-              card: { width: "100%" },
+              card: { width: "100%", margin: 0 },
               rootBox: { width: "100%" },
               formField: { borderRadius: "10px" },
             },
