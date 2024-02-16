@@ -109,10 +109,7 @@ const ProducForm = ({
           toast.dismiss();
           setIsSub(false);
 
-          toast.error(e.response.data.message || "Error Happend", {
-            invert: true,
-          });
-          console.log(e);
+          toast.error(e.response.data.message || "Error Happend");
         });
       setIsSub(false);
     } catch (error) {

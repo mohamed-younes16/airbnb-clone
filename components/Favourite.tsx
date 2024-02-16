@@ -34,10 +34,7 @@ const Favourite = ({
       .catch((e) => {
         toast.dismiss();
         action == "add" ? setIsfavourated(false) : setIsfavourated(true);
-        toast.error(e.response.data.message || "Error Happend", {
-          invert: true,
-        });
-        console.log(e);
+        toast.error(e.response.data.message || "Error Happend");
       })
       .finally(() => setIsLoading(false));
   }, 400);

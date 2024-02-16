@@ -126,7 +126,6 @@ export const regions: continentsType[] = [
 ];
 const NavBar = async () => {
   const currentUserData = await getCurrentUser();
-  console.log(currentUserData);
 
   return (
     <>

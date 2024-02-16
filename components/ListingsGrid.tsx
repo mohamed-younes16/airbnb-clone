@@ -56,7 +56,7 @@ const ListingsGrid = ({
         .catch((e) => {
           toast.dismiss();
           toast.error(e.response.data.message || "Error Happend");
-          console.log(e);
+   
         })
         .finally(() => setIsLoading(""));
       toast.dismiss();

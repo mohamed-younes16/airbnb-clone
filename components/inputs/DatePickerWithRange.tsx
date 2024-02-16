@@ -46,9 +46,7 @@ export function DatePickerWithRange({
       )
     );
   }, [date]);
-  useEffect(() => {
-    console.log(days);
-  }, [days]);
+
   const handleClick = async () => {
     setIsLoading(true);
     try {
@@ -73,13 +71,13 @@ export function DatePickerWithRange({
           }) => {
             toast.dismiss();
 
-            toast.message(message);
+            toast.success(message);
             router.push(`/trips/${reservation.id}`);
           }
         )
         .catch((e) => {
           toast.dismiss();
-          toast.message(e?.response?.data?.message || "Error Happend");
+          toast.error(e?.response?.data?.message || "Error Happend");
         })
         .finally(() => {
           setIsLoading(false);
@@ -122,10 +120,7 @@ export function DatePickerWithRange({
         mode="range"
         defaultMonth={date?.from}
         selected={date}
-        onSelect={(e) => {
-          console.log(e);
-          setDate(e);
-        }}
+        onSelect={setDate}
         numberOfMonths={1}
         disabled={disabledDays}
       />

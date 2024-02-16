@@ -226,7 +226,7 @@ const Search = ({
     );
     setpopopen(searchParams.get("redirected") === "true" && userData === null);
     setOpen(searchParams.get("redirected") === "true" ? "login" : "");
-    return () => console.log("hjhhhh");
+
   }, [searchParams]);
 
   return (

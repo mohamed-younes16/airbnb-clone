@@ -44,13 +44,7 @@ const DeleteStore = ({ storeId }: { storeId: string }) => {
                         }, 500);
                       })
                       .catch((e) => {
-                        console.log(e);
-                        toast.error(
-                          e.response.data.message || "Error Happend",
-                          {
-                            invert: true,
-                          }
-                        );
+                        toast.error(e.response.data.message || "Error Happend");
                       });
 
                     toast.dismiss();
