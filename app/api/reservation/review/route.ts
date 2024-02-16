@@ -1,11 +1,12 @@
-import { ReservationInputType } from "@/index";
+
+import getCurrentUser from "@/actions/getCurrentUser";
 import prismadb from "@/lib/prismabd";
-import { currentUser } from "@clerk/nextjs";
+
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const user = await currentUser();
+    const user = await getCurrentUser();
 
     if (!user) return new NextResponse("unauthorized", { status: 401 });
     const data: { message: string; stars: number; reservationId: string } =

@@ -52,7 +52,6 @@ export function DatePickerWithRange({
   const handleClick = async () => {
     setIsLoading(true);
     try {
-      console.log(date);
       const reservation = date &&
         date.from &&
         date.to && {
@@ -80,10 +79,12 @@ export function DatePickerWithRange({
         )
         .catch((e) => {
           toast.dismiss();
-          toast.error(e?.response?.data?.message || "Error Happend");
-
+          toast.message(e?.response?.data?.message || "Error Happend");
         })
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          setIsLoading(false);
+          router.refresh();
+        });
 
       toast.dismiss();
     } catch (error) {

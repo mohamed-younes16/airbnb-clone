@@ -1,4 +1,5 @@
 import { getListings } from "@/actions";
+import getCurrentUser from "@/actions/getCurrentUser";
 import Heading from "@/components/Heading";
 import ProductsGrid from "@/components/ListingsGrid";
 
@@ -23,7 +24,7 @@ export default async function Home({
       continent: searchParams.continent || "",
       category: searchParams.category || "",
     })) || [];
-
+  const user = await getCurrentUser();
   return (
     <>
       <div className=" h-[150dvh] ">
@@ -42,7 +43,11 @@ export default async function Home({
         )}
 
         {fetchedData ? (
-          <ProductsGrid type="listing" listings={fetchedData} />
+          <ProductsGrid
+            loggedIn={user?.onboarded || false}
+            type="listing"
+            listings={fetchedData}
+          />
         ) : null}
       </div>
     </>

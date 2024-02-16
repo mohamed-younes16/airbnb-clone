@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import LoginButton from "../navbar/LoginButton";
+import { signIn } from "next-auth/react";
 const RegisterForm = ({ type }: { type: "login" | "register" }) => {
   const defaultValues =
     type == "register"
@@ -74,7 +75,20 @@ const RegisterForm = ({ type }: { type: "login" | "register" }) => {
         ...values,
       };
 
-      const adding = axios.patch(`/api/stores/`);
+      const adding =
+        type == "register"
+          ? axios.post(`/api/register`, { ...data })
+          : signIn("credentials", { redirect: false, ...data })
+              .then((e) => {
+                console.log(e);
+                e?.ok ? toast.success(e?.ok) : toast.error(e?.error);
+              })
+              .catch((e) => {
+                console.log(e);
+                toast.error(e.response.data.message || "Error Happend", {
+                  invert: true,
+                });
+              });
 
       adding
         .then((e) => {
@@ -150,7 +164,7 @@ const RegisterForm = ({ type }: { type: "login" | "register" }) => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+             
                 </FormItem>
               )}
             />
@@ -221,12 +235,16 @@ const RegisterForm = ({ type }: { type: "login" | "register" }) => {
       </Form>
       <div className="space-y-4 mt-6">
         <LoginButton
-          onClick={() => {}}
+          onClick={async () => {
+            signIn("google");
+          }}
           icon={<FcGoogle className="h-10 w-8" />}
           label="continue with google"
         />
         <LoginButton
-          onClick={() => {}}
+          onClick={async () => {
+            signIn("github");
+          }}
           icon={<FaGithub className="h-10 w-8" />}
           label="continue with Github"
         />

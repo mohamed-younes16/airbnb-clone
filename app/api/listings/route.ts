@@ -1,11 +1,12 @@
+import getCurrentUser from "@/actions/getCurrentUser";
 import { ListingType } from "@/index";
 import prismadb from "@/lib/prismabd";
-import { currentUser } from "@clerk/nextjs";
+
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const user = await currentUser();
+    const user = await getCurrentUser();
     if (!user) return new NextResponse("unauthorized", { status: 401 });
     const data: ListingType = await req.json();
     const listingCreation = await prismadb.listing.create({

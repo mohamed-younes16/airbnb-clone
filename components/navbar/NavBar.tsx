@@ -20,6 +20,7 @@ import { BsSnow } from "react-icons/bs";
 import { IoDiamond } from "react-icons/io5";
 import { MdOutlineVilla } from "react-icons/md";
 import { continentsType } from "@/index";
+import getCurrentUser from "@/actions/getCurrentUser";
 export const categoriesList = [
   {
     label: "Beach",
@@ -124,7 +125,8 @@ export const regions: continentsType[] = [
   },
 ];
 const NavBar = async () => {
-  const currentUserData = await currentUserDb();
+  const currentUserData = await getCurrentUser();
+  console.log(currentUserData);
 
   return (
     <>
@@ -151,14 +153,12 @@ const NavBar = async () => {
                 src={"/assets/icon.svg"}
               />
             </Link>
-            <Search
-    
-              continents={regions}
-              userData={currentUserData!}
-            />
+
+            <Search continents={regions} userData={currentUserData!} />
           </div>
           <div className="min-h-[50px]">
-            <Categories />
+            {" "}
+            <Categories />{" "}
           </div>
         </div>
       </div>

@@ -17,22 +17,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import MenuItem from "./MenuItem";
-import { SignedIn } from "@clerk/nextjs";
 import Link from "next/link";
-import { User } from "@prisma/client";
 import Image from "next/image";
 import LoginModal from "../modals/LoginModal";
 import RegisterModal from "../modals/RegisterModal";
 import RentModal from "../modals/RentModal";
 import { useStore } from "@/hooks/store";
 import CliComponent from "../CliComponent";
-import { cn } from "@/lib/utils";
 
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
@@ -41,35 +37,10 @@ import { FaAirbnb, FaPersonCircleQuestion } from "react-icons/fa6";
 import Counter from "../inputs/Counter";
 import { useRouter, useSearchParams } from "next/navigation";
 import queryString from "query-string";
-import { continentsType } from "@/index";
+import { FetchedUser, continentsType } from "@/index";
 import ImageContainer from "../ImageContainer";
 import Heading from "../Heading";
 import SignOutButton from "../inputs/SignOutButton";
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
 
 export const NavigationMenuDemo = ({
   continents,
@@ -173,18 +144,17 @@ export const NavigationMenuDemo = ({
           flex-wrap gap-3 p-6 `}
             >
               {continents.map((e) => (
-            
-                  <div
+                <div
                   key={e.image}
-                    className={`max-md:!min-w-[120px] max-md:!max-w-[120px]
+                  className={`max-md:!min-w-[120px] max-md:!max-w-[120px]
                      md:min-w-[150px] md:max-w-[150px] h-[8rem]  group
             p-2 cursor-pointer transition-all gap-3  `}
-                  >
-                    <div
-                      onClick={() =>
-                        setContinent(e.continent.toLocaleLowerCase())
-                      }
-                      className={`
+                >
+                  <div
+                    onClick={() =>
+                      setContinent(e.continent.toLocaleLowerCase())
+                    }
+                    className={`
                     rounded-xl   transition-all 
                   ${
                     continent.toLocaleLowerCase() ===
@@ -193,19 +163,17 @@ export const NavigationMenuDemo = ({
                   group-hover:border-foreground border-2 
                   h-[90%]
                   `}
-                    >
-                      <ImageContainer
-                        className={"object-contain"}
-                        src={`/assets${e.image}`}
-                      />
-                    </div>
-
-                    <p className="text-xl max-md:text-base capitalize">
-                      {e.continent}
-                    </p>
+                  >
+                    <ImageContainer
+                      className={"object-contain"}
+                      src={`/assets${e.image}`}
+                    />
                   </div>
-            
-              
+
+                  <p className="text-xl max-md:text-base capitalize">
+                    {e.continent}
+                  </p>
+                </div>
               ))}
             </ul>
           </NavigationMenuContent>
@@ -242,7 +210,7 @@ const Search = ({
   userData,
   continents,
 }: {
-  userData: User | null;
+  userData?: FetchedUser;
   continents: continentsType[];
 }) => {
   const searchParams = useSearchParams();
@@ -258,7 +226,7 @@ const Search = ({
     );
     setpopopen(searchParams.get("redirected") === "true" && userData === null);
     setOpen(searchParams.get("redirected") === "true" ? "login" : "");
-    return ()=>console.log('hjhhhh')
+    return () => console.log("hjhhhh");
   }, [searchParams]);
 
   return (
@@ -269,11 +237,11 @@ const Search = ({
         </div>
       </div>
       <div className="flexcenter lg:flex-1 gap-4 md:min-w-[180px]">
-        <SignedIn>
+        <div className="md:flex-1">
           <CliComponent>
             <RentModal />
           </CliComponent>
-        </SignedIn>
+        </div>
 
         <div className="max-md:hidden">
           {" "}
@@ -281,7 +249,8 @@ const Search = ({
         </div>
         <div
           className=" max-sm:fixed backdrop-blur-sm  max-sm:bg-background/20 
-          max-sm:shadow-[inset_0px_3px_6px_0px_hsl(var(--foreground)_/_0.2)] bottom-0 flexcenter
+          max-sm:shadow-[inset_0px_3px_6px_0px_hsl(var(--foreground)_/_0.2)]
+           bottom-0 flexcenter
           
              max-sm:py-2 left-0 max-sm:w-full"
         >
@@ -294,16 +263,16 @@ const Search = ({
           >
             <PopoverTrigger>
               <div
-                className="flexcenter relative p-2 transition-all 
+                className="flexcenter group/profile relative p-2 transition-all 
                 shadow-[inset_0px_3px_6px_0px_hsl(var(--foreground)_/_0.2)]
-           border-foreground/20 font-semibold border   hover:shadow-[inset_0px_3px_6px_0px_hsl(var(--foreground)_/_0)] cursor-pointer  rounded-full py-2 gap-4"
+                border-foreground/20 font-semibold border  hover:shadow-[inset_0px_3px_6px_0px_hsl(var(--foreground)_/_0)] cursor-pointer  rounded-full py-2 gap-4"
               >
-                <Menu />
+                <Menu className="h-6 transition-all  group-hover/profile:text-main" />
 
-                {userData ? (
+                {userData?.imageUrl ? (
                   <Image
                     alt=""
-                    src={userData.imageUrl}
+                    src={userData?.imageUrl}
                     className="rounded-full  min-h-[30px] min-w-[30px]  "
                     height={30}
                     width={30}
@@ -312,7 +281,7 @@ const Search = ({
                   <Image
                     alt=""
                     src={"/assets/placeholder.jpg"}
-                    className="rounded-full   "
+                    className="rounded-full  min-h-[30px] min-w-[30px]  "
                     height={30}
                     width={30}
                   />
@@ -353,24 +322,25 @@ const Search = ({
                     </Link>
                   </MenuItem>
                 </>
-              )}{" "}
-              <Separator className="my-4 md:hidden" />
+              )}
+              <Separator className={`my-4 ${!userData && "hidden"}`} />
               <MenuItem className="md:hidden">
                 <div className="flex gap-2 items-center">
-                  {" "}
                   <ModeToggle>Theme</ModeToggle>
                 </div>
               </MenuItem>
-              <SignedIn>
-                {" "}
-                <MenuItem className=" text-red-600" onclick={() => {}}>
+              {userData && (
+                <MenuItem
+                  className=" flexcenter text-red-600"
+                  onclick={() => {}}
+                >
                   <SignOutButton>
-                    <div className="flex w-full gap-1 items-center">
+                    <div className="flex w-full h-full gap-1 items-center">
                       <LucideLogOut className="h-6 w-6 " /> Logout
                     </div>
                   </SignOutButton>
                 </MenuItem>
-              </SignedIn>
+              )}
             </PopoverContent>
           </Popover>
         </div>

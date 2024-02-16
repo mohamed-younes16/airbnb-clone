@@ -1,7 +1,8 @@
 "use server";
 import prismadb from "@/lib/prismabd";
-import { currentUser } from "@clerk/nextjs";
+
 import { ListingByIdType, LocationValueType } from "..";
+import getCurrentUser from "./getCurrentUser";
 const continentsList = ["America", "Oceania", "Europe", "Africa", "Asia"];
 export const ignoreKeys = (obj, keysToIgnore) => {
   const newObj = { ...obj };
@@ -10,20 +11,16 @@ export const ignoreKeys = (obj, keysToIgnore) => {
 };
 
 export const currentUserDb = async () => {
-  const clerkUser = await currentUser();
+  const userData = await getCurrentUser();
 
   const user = await prismadb.user.findFirst({
-    where: { id: clerkUser?.id || "" },
+    where: { id: userData?.id || "" },
     include: { favourites: { select: { id: true } } },
   });
 
   return user;
 };
 
-export const currentClerkUser = async () => {
-  const clerkUser = await currentUser();
-  return clerkUser;
-};
 
 export const getListings = async ({
   guestCount = 1,
@@ -106,7 +103,7 @@ export const getListingById = async (id: string) => {
   const dataReturned: ListingByIdType = {
     ...data!,
     isFavourated: userFavourites.has(data?.id || "") || false,
-    owner: { ...data?.owner },
+    owner: { ...data?.owner } as any,
     locationValue: JSON.parse(data?.locationValue || "") as string &
       LocationValueType,
     reviews: reviews.map((e) => e.stars),

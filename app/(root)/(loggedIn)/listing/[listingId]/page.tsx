@@ -6,7 +6,7 @@ import { DatePickerWithRange } from "@/components/inputs/DatePickerWithRange";
 import ListingShowCase from "@/components/ListingShowCase";
 import ImagesShow from "@/components/ImageShow";
 import { Separator } from "@/components/ui/separator";
-import { auth } from "@clerk/nextjs";
+import getCurrentUser from "@/actions/getCurrentUser";
 
 const page = async ({
   params: { listingId },
@@ -15,7 +15,7 @@ const page = async ({
 }) => {
   const listing = await getListingById(listingId);
   const images = listing?.images;
-  const { userId } = auth();
+  const user = await getCurrentUser();
   const fromDate =
     listing.reservations &&
     listing.reservations[0] &&
@@ -30,7 +30,12 @@ const page = async ({
               title={listing.title || ""}
               description={listing.category || ""}
             />
-            <Favourite isFavour={listing.isFavourated} listingId={listingId} />
+            {user && (
+              <Favourite
+                isFavour={listing.isFavourated}
+                listingId={listingId}
+              />
+            )}
           </div>
           <div className="  h-[55dvh] max-lg:h-[30dvh] max-xl:h-[40dvh]">
             <ImagesShow images={images || []} />
@@ -41,7 +46,7 @@ const page = async ({
               <ListingShowCase listing={listing} />
             </div>
 
-            {listing.ownerId !== userId && (
+            {listing.ownerId !== user?.id && (
               <div className="flex-1 flex h-fit justify-center">
                 <DatePickerWithRange
                   fromDate={fromDate}

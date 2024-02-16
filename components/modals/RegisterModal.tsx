@@ -1,14 +1,14 @@
 "use client";
-import { SignUp } from "@clerk/nextjs";
+
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import MenuItem from "../navbar/MenuItem";
 import { AuthenticationModalType } from "@/index";
 import { useTheme } from "next-themes";
-import { dark } from "@clerk/themes";
+
+import RegisterForm from "../forms/RegisterForm";
 
 const RegisterModal = ({ open, setOpen }: AuthenticationModalType) => {
-  const { theme } = useTheme();
-  const themeOpts = theme == "light" ? {} : { baseTheme: dark };
+
   return (
     <Dialog
       open={open === "register"}
@@ -27,16 +27,8 @@ const RegisterModal = ({ open, setOpen }: AuthenticationModalType) => {
         </h1>
         <div className="text-foreground/80">Create an Account</div>
 
-        <SignUp
-          appearance={{
-            elements: {
-              card: { width: "100%", margin: 0 },
-              rootBox: { width: "100%" },
-              formField: { borderRadius: "10px" },
-            },
-            ...themeOpts,
-          }}
-        />
+
+                <RegisterForm type="register" />
         <div className="flex gap-2">
           <p>Already have an account?</p>
           <div

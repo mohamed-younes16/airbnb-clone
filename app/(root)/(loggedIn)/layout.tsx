@@ -1,6 +1,6 @@
+import getCurrentUser from "@/actions/getCurrentUser";
 import Heading from "@/components/Heading";
 import { Button } from "@/components/ui/button";
-import {  currentUser } from "@clerk/nextjs";
 import { ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -13,7 +13,7 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  const user = await currentUser();
+  const user = await getCurrentUser();
   return (
     <div>
       {user?.id ? (

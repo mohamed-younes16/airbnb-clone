@@ -1,13 +1,17 @@
-"use client"
+"use client";
 
-import { redirect, usePathname } from "next/navigation"
+import { User } from "@prisma/client";
+import { redirect, usePathname } from "next/navigation";
+import { FetchedUser } from "..";
 
-const CheckUser = ({userData}) => {
-const pathName = usePathname()
+const CheckUser = ({ userData }:{userData:FetchedUser}) => {
+  const pathName = usePathname();
 
-    if (!userData && pathName != "/profile") {redirect("/profile")}
+  if (!userData.onboarded && pathName != "/profile") {
+    redirect("/profile");
+  }
 
-  return null
-}
+  return null;
+};
 
-export default CheckUser
+export default CheckUser;

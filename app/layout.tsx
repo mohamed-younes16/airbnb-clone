@@ -1,13 +1,14 @@
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { GeistSans } from "geist/font/sans";
-import { ClerkProvider, currentUser } from "@clerk/nextjs";
-import "@radix-ui/themes/styles.css";
+
+
 import { ReactNode } from "react";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { GeistMono } from "geist/font/mono";
-import { currentUserDb } from "@/actions";
+
 import CheckUser from "@/components/CheckUser";
+import getCurrentUser from "@/actions/getCurrentUser";
 
 export const metadata = {
   title: "airbnb-clone",
@@ -18,11 +19,10 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  const clerkUser = await currentUser();
-  const user = await currentUserDb();
+  const cur = await getCurrentUser();
 
   return (
-    <ClerkProvider >
+
       <html
         suppressHydrationWarning
         lang="en"
@@ -31,7 +31,7 @@ export default async function RootLayout({
         <body className=" overflow-x-hidden">
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
             storageKey="admin-theme"
           >
@@ -41,13 +41,13 @@ export default async function RootLayout({
             
           "
             >
-              {clerkUser ? <CheckUser userData={user} /> : null}
+              {cur && <CheckUser userData={cur} />}
               <Toaster richColors position="top-center" />
               {children}
             </div>
           </ThemeProvider>
         </body>
       </html>
-    </ClerkProvider>
+
   );
 }

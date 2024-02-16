@@ -1,16 +1,14 @@
 "use client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import MenuItem from "../navbar/MenuItem";
-import { SignIn } from "@clerk/nextjs";
 import { AuthenticationModalType } from "@/index";
-import { dark } from "@clerk/themes";
-import { useTheme } from "next-themes";
 import { useStore } from "@/hooks/store";
+import RegisterForm from "../forms/RegisterForm";
 const LoginModal = ({ setOpen, open }: AuthenticationModalType) => {
-  const { theme } = useTheme();
+
   const { isLoginModalOpen } = useStore();
-  const themeOpts = theme == "light" ? {} : { baseTheme: dark };
-  console.log(isLoginModalOpen)
+
+
   return (
     <Dialog
       open={open === "login" || isLoginModalOpen}
@@ -27,16 +25,8 @@ const LoginModal = ({ setOpen, open }: AuthenticationModalType) => {
         <h1 className="text-3xl max-md:text-xl font-bold">login to Airbnb</h1>
         <div className="text-foreground/80">login to Account</div>
 
-        <SignIn
-          appearance={{
-            elements: {
-              card: { width: "100%", margin: 0 },
-              rootBox: { width: "100%" },
-              formField: { borderRadius: "10px" },
-            },
-            ...themeOpts,
-          }}
-        />
+      
+         <RegisterForm type="login" />
         <div className="flex gap-2">
           <p>New to AirBnb create an account!</p>
           <div
@@ -46,6 +36,7 @@ const LoginModal = ({ setOpen, open }: AuthenticationModalType) => {
             Register
           </div>
         </div>
+     
       </DialogContent>
     </Dialog>
   );

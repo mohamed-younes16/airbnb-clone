@@ -1,4 +1,5 @@
 import { GetReservations } from "@/actions";
+import getCurrentUser from "@/actions/getCurrentUser";
 import Heading from "@/components/Heading";
 import ListingsGrid from "@/components/ListingsGrid";
 import React from "react";
@@ -16,6 +17,7 @@ const page = async () => {
     id: e.id,
     isEnded: e.endDate.getTime() < new Date().getTime(),
   }));
+  const user = await getCurrentUser();
   return (
     <div>
       {trips?.length == 0 && (
@@ -29,7 +31,11 @@ const page = async () => {
           </div>
         </>
       )}
-      <ListingsGrid type="trip" listings={trips} />
+      <ListingsGrid
+        loggedIn={user?.onboarded || false}
+        type="trip"
+        listings={trips}
+      />
     </div>
   );
 };

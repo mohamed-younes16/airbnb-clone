@@ -1,11 +1,12 @@
+import getCurrentUser from "@/actions/getCurrentUser";
 import prismadb from "@/lib/prismabd";
-import { auth, currentUser } from "@clerk/nextjs";
-import { NextResponse, NextRequest } from "next/server";
+
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
   try {
-
-    const user = await currentUser();
+    const user = await getCurrentUser();
+    console.log(user)
     if (!user) return new NextResponse("unauthorized", { status: 401 });
 
     const data: {
@@ -16,20 +17,16 @@ export async function POST(req: Request, res: Response) {
     } = await req.json();
     if (!data) return new NextResponse("no Name Provided", { status: 401 });
 
-    try {
-      const userupsert = await prismadb.user.upsert({
-        create: { id: user.id, ...data, onboarded: true ,},
-        update: { id: user.id, ...data, onboarded: true },
-        where: { id: user.id },
-      });
+    const userupsert = await prismadb.user.upsert({
+      create: { id: user.id, ...data, onboarded: true },
+      update: { id: user.id, ...data, onboarded: true },
+      where: { id: user.id },
+    });
+    console.log(userupsert);
 
-    } catch (error) {}
     return NextResponse.json({ message: "account is ready" }, { status: 200 });
   } catch (error) {
     console.log(error, "##########authorization###############");
-    return NextResponse.json(
-      { message: "error in server", },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "error in server" }, { status: 500 });
   }
 }

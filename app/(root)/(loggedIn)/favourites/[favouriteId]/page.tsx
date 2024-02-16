@@ -5,6 +5,7 @@ import Favourite from "@/components/Favourite";
 import { DatePickerWithRange } from "@/components/inputs/DatePickerWithRange";
 import ListingShowCase from "@/components/ListingShowCase";
 import ImagesShow from "@/components/ImageShow";
+import getCurrentUser from "@/actions/getCurrentUser";
 
 const page = async ({
   params: { favouriteId },
@@ -13,7 +14,7 @@ const page = async ({
 }) => {
   const listing = await getListingById(favouriteId);
   const images = listing?.images;
-
+  const user = await getCurrentUser();
   const fromDate =
     listing.reservations &&
     listing.reservations[0] &&
@@ -28,10 +29,12 @@ const page = async ({
               title={listing.title || ""}
               description={listing.category || ""}
             />
-            <Favourite
-              isFavour={listing.isFavourated}
-              listingId={favouriteId}
-            />
+            {user && (
+              <Favourite
+                isFavour={listing.isFavourated}
+                listingId={favouriteId}
+              />
+            )}
           </div>
           <div className="  h-[55dvh] max-lg:h-[30dvh] max-xl:h-[40dvh]">
             <ImagesShow images={images || []} />

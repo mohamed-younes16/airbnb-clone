@@ -1,4 +1,5 @@
 import { GetOrders } from "@/actions";
+import getCurrentUser from "@/actions/getCurrentUser";
 import Heading from "@/components/Heading";
 import ListingsGrid from "@/components/ListingsGrid";
 import React from "react";
@@ -6,6 +7,7 @@ import { TbZoomCancel } from "react-icons/tb";
 
 const page = async () => {
   const reservations = await GetOrders();
+  const user = await getCurrentUser();
   const orders = reservations.map((e) => ({
     ...e.listing,
     totalPrice: e.totalPrice,
@@ -18,8 +20,8 @@ const page = async () => {
   }));
 
   return (
-    <div className=" px-4 "> 
-          <Heading title="Orders Page" description="Monitor your orders list ." />
+    <div className=" px-4 ">
+      <Heading title="Orders Page" description="Monitor your orders list ." />
       {orders?.length == 0 && (
         <>
           <div className="flexcenter h-[50dvh] flex-col text-center">
@@ -28,7 +30,11 @@ const page = async () => {
           </div>
         </>
       )}
-      <ListingsGrid type="order" listings={orders} />
+      <ListingsGrid
+        loggedIn={user?.onboarded || false}
+        type="order"
+        listings={orders}
+      />
     </div>
   );
 };

@@ -24,16 +24,14 @@ import { UploadDropzone } from "@/utils/uploadthing";
 import { toast } from "sonner";
 import "@uploadthing/react/styles.css";
 import { useRouter } from "next/navigation";
-
 import axios from "axios";
 
 import { X } from "lucide-react";
-import { User } from "@prisma/client";
-import { currentUser } from "@clerk/nextjs";
 
+import { FetchedUser } from "@/index";
+import { useEffect, useState } from "react";
 
-
-const ProfileForm = ({ userData }: { userData?: User }) => {
+const ProfileForm = ({ userData }: { userData: FetchedUser | null }) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof SetupSchema>>({
@@ -45,11 +43,15 @@ const ProfileForm = ({ userData }: { userData?: User }) => {
       username: userData?.username || "",
     },
   });
-
+  const [isSubmitting, setIsSub] = useState(false);
+  useEffect(() => {
+    setIsSub(form.formState.isSubmitting);
+  }, [form.formState]);
   async function onSubmit(values: z.infer<typeof SetupSchema>) {
     try {
+      setIsSub(true);
       toast.loading("uploading.....", { dismissible: false });
-      const adding = axios.post(`/api/auth`, values);
+      const adding = axios.post(`/api/authentication`, values);
 
       adding
         .then((e) => {
@@ -60,12 +62,11 @@ const ProfileForm = ({ userData }: { userData?: User }) => {
           toast.dismiss();
           toast.error(e.response.data.message);
         });
-
+      router.refresh();
       toast.dismiss();
-      setTimeout(() => {
-        router.refresh();
-      }, 400);
+      setIsSub(false);
     } catch (error) {
+      setIsSub(false);
       console.log(error);
     }
   }
@@ -76,6 +77,7 @@ const ProfileForm = ({ userData }: { userData?: User }) => {
         <FormField
           control={form.control}
           name="imageUrl"
+          disabled={isSubmitting}
           render={({ field }) => (
             <FormItem className=" flex justify-center  gap-20 flex-wrap max-md:gap-10 ">
               {field.value ? (
@@ -130,10 +132,10 @@ const ProfileForm = ({ userData }: { userData?: User }) => {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="name"
+          disabled={isSubmitting}
           render={({ field }) => (
             <FormItem className=" flex flex-col   ">
               <FormLabel className="   ">Name</FormLabel>
@@ -145,10 +147,10 @@ const ProfileForm = ({ userData }: { userData?: User }) => {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="username"
+          disabled={isSubmitting}
           render={({ field }) => (
             <FormItem className=" flex flex-col   ">
               <FormLabel className="   ">Username</FormLabel>
@@ -160,10 +162,10 @@ const ProfileForm = ({ userData }: { userData?: User }) => {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="bio"
+          disabled={isSubmitting}
           render={({ field }) => (
             <FormItem className=" flex flex-col   ">
               <FormLabel className="    ">Bio</FormLabel>
@@ -180,21 +182,23 @@ const ProfileForm = ({ userData }: { userData?: User }) => {
           )}
         />
 
-        <Button
-          type="submit"
-          disabled={form.formState.isSubmitting}
-          className={`${
-            form.formState.isSubmitting ? " animate-bounce bg-zinc-500" : ""
-          } flexcenter gap-6`}
-        >
-          Submit
-          {form.formState.isSubmitting && (
-            <div
-              className="w-8 h-8 border-4 border-white
+        {form.formState.isDirty && (
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className={`${
+              isSubmitting ? "  bg-zinc-500" : ""
+            } flexcenter gap-2`}
+          >
+            Submit
+            {isSubmitting && (
+              <div
+                className="w-4 h-4 border-2 border-white
      dark:border-black !border-t-transparent rounded-full animate-spin"
-            />
-          )}
-        </Button>
+              />
+            )}
+          </Button>
+        )}
       </form>
     </Form>
   );

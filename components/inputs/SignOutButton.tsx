@@ -1,19 +1,12 @@
 "use client";
-import { useClerk } from "@clerk/clerk-react";
-import { SignedIn } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { ReactNode } from "react";
 
 const SignOutButton = ({ children }: { children: ReactNode }) => {
-  const { signOut } = useClerk();
-  const router = useRouter();
-
   return (
-    <SignedIn>
-      <button  className="w-full" onClick={() => signOut(() => router.push("/"))}>
-        {children}{" "}
-      </button>
-    </SignedIn>
+    <button className="w-full" onClick={() => signOut({ redirect: true ,})}>
+      {children}{" "}
+    </button>
   );
 };
 

@@ -16,8 +16,10 @@ export function ModeToggle({ children }: { children?: React.ReactNode }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className=" md:p-2  max-md:w-full max-md:h-full 
-        items-center gap-2  flex cursor-pointer ">
+        <div
+          className=" md:p-2  max-md:w-full max-md:h-full 
+        items-center gap-2  flex cursor-pointer "
+        >
           <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>

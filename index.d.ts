@@ -82,3 +82,13 @@ interface continentsType {
   image: string;
 }
 
+interface FetchedUser {
+  id: string;
+  name: string | null;
+  username: string | null;
+  imageUrl: string | null;
+  bio: string | null;
+  onboarded: boolean;
+  createdAt: Date;
+  email: string | null;
+}

@@ -1,11 +1,12 @@
+import getCurrentUser from "@/actions/getCurrentUser";
 import { ReservationInputType } from "@/index";
 import prismadb from "@/lib/prismabd";
-import { currentUser } from "@clerk/nextjs";
+
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const user = await currentUser();
+    const user = await getCurrentUser();
 
     if (!user) return new NextResponse("unauthorized", { status: 401 });
     const data: ReservationInputType = await req.json();
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
 
       return NextResponse.json(
         { message: "reserved successfully ✅", reservation },
-        { status: 401 }
+        { status: 201 }
       );
     } else {
       return NextResponse.json(
@@ -40,7 +41,7 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
-    const user = await currentUser();
+    const user = await getCurrentUser();
 
     if (!user) return new NextResponse("unauthorized", { status: 401 });
     const { id, userType }: { id: string; userType: "seller" | "buyer" } =

@@ -20,19 +20,21 @@ import { Badge } from "./ui/badge";
 import axios from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { SignedIn } from "@clerk/nextjs";
 
 const ListingsGrid = ({
   listings,
   type,
+  loggedIn,
 }:
   | {
       listings: FetchedListingType[];
       type: "listing";
+      loggedIn: boolean;
     }
   | {
       listings: FetchedTripsType[];
       type: "trip" | "order";
+      loggedIn: boolean;
     }) => {
   const router = useRouter();
   const [loading, setIsLoading] = useState("");
@@ -89,13 +91,14 @@ const ListingsGrid = ({
                rounded-xl  relative"
               >
                 <Carousel className="w-[90%] relative overflow-hidden rounded-xl mx-auto">
-                  <SignedIn>
-                    {type !== "order" && (
-                      <div className="absolute top-1 z-10 right-1">
+                  {type !== "order" && (
+                    <div className="absolute top-1 z-10 right-1">
+                      {loggedIn && (
                         <Favourite isFavour={e.isFavourated} listingId={e.id} />
-                      </div>
-                    )}
-                  </SignedIn>
+                      )}
+                    </div>
+                  )}
+
                   <CarouselContent className=" rounded-2xl ">
                     {e.images.map((el) => (
                       <CarouselItem
