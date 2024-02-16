@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react";
 import { addDays, format } from "date-fns";
 import { Calendar as CalendarIcon, DollarSign, Loader2 } from "lucide-react";
 import { DateRange } from "react-day-picker";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import axios from "axios";
 import { toast } from "sonner";
-import { Reservation } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { ReservationType } from "@/index";
+
 
 interface DatePickerWithRangeProps {
   className?: string;
@@ -67,7 +67,7 @@ export function DatePickerWithRange({
           ({
             data: { message, reservation },
           }: {
-            data: { message: string; reservation: Reservation };
+            data: { message: string; reservation: ReservationType };
           }) => {
             toast.dismiss();
 

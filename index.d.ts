@@ -46,7 +46,17 @@ interface LocationValueType {
   region: string;
   label: string;
 }
-
+interface ReservationType  {
+  id: string;
+  ownerId: string;
+  listingId: string;
+  totalPrice: number;
+  totalDays: number;
+  startDate: Date;
+  endDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
 interface ReservationInputType {
   endDate: Date;
   startDate: Date;
