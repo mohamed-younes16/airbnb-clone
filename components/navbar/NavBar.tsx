@@ -21,6 +21,7 @@ import { IoDiamond } from "react-icons/io5";
 import { MdOutlineVilla } from "react-icons/md";
 import { continentsType } from "@/index";
 import getCurrentUser from "@/actions/getCurrentUser";
+import { Suspense } from "react";
 export const categoriesList = [
   {
     label: "Beach",
@@ -152,8 +153,10 @@ const NavBar = async () => {
                 src={"/assets/icon.svg"}
               />
             </Link>
-
-            <Search continents={regions} userData={currentUserData!} />
+            <Suspense>
+                <Search continents={regions} userData={currentUserData!} />
+            </Suspense>
+          
           </div>
           <div className="min-h-[50px]">
             {" "}
