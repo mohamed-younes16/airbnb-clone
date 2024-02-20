@@ -5,10 +5,7 @@ import { AuthenticationModalType } from "@/index";
 import { useStore } from "@/hooks/store";
 import RegisterForm from "../forms/RegisterForm";
 const LoginModal = ({ setOpen, open }: AuthenticationModalType) => {
-
   const { isLoginModalOpen } = useStore();
-
-
   return (
     <Dialog
       open={open === "login" || isLoginModalOpen}

@@ -221,11 +221,9 @@ const Search = ({
   const { setisRentModalOpen, setisLoginModalOpen } = useStore();
 
   useEffect(() => {
-    setisLoginModalOpen(
-      searchParams.get("redirected") === "true" && userData === null
-    );
-    setpopopen(searchParams.get("redirected") === "true" && userData === null);
-    setOpen(searchParams.get("redirected") === "true" ? "login" : "");
+    const redirected = searchParams.get("redirected") === "true";
+    setisRentModalOpen(false)
+    setpopopen(redirected && userData === null);
 
   }, [searchParams]);
 

@@ -330,8 +330,9 @@ const RentModal = () => {
       console.log(error);
     }
   }
+
   return (
-    <Dialog open={isRentModalOpen} onOpenChange={(e) => setisRentModalOpen(e)}>
+    <Dialog open={isRentModalOpen} onOpenChange={(e) =>{ setisRentModalOpen(e)}}>
       <DialogTrigger asChild className=" max-md:hidden text-start w-full">
         <div className="flexcenter">
           <Button className="rounded-full" variant={"ghost"}>
@@ -345,7 +346,7 @@ const RentModal = () => {
       >
         <div className="flex-1">
           <div className="flexcenter  font-semibold text-xl">Rent Yor home</div>
-          <Heading title="Airbnb" description="login to Account" />
+          <Heading title="Airbnb" description="Add your place airbnb" />
 
           <div
             className="h-2 bg-accent relative w-full rounded-full 

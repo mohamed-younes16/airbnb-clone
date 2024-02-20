@@ -36,7 +36,7 @@ const ListingShowCase = ({ listing }: { listing: ListingByIdType }) => {
           <ImageContainer src={listing.owner.imageUrl || ""} />
         </div>
         <div>
-          <p className="font-semibold text-xl">
+          <p className="font-semibold max-md:text-lg text-xl">
             Hosted By {listing.owner.username}
           </p>
         </div>

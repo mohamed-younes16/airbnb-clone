@@ -6,13 +6,9 @@ export const metadata = {
   description: "airbnb-clone by younes",
 };
 export default async function RootLayout({
-  searchParams,
   children,
 }: {
   children: ReactNode;
-  searchParams: {
-    redirected: string;
-  };
 }) {
 
   return (

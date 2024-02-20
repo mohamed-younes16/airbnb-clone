@@ -21,18 +21,20 @@ export const currentUserDb = async () => {
   return user;
 };
 
-
 export const getListings = async ({
   guestCount = 1,
   continent = "",
   bathsCount = 1,
   category = "",
+  start = 0,
 }: {
   guestCount?: number;
   continent?: string;
   bathsCount?: number;
   category?: string;
+  start: number;
 }) => {
+  console.log(start)
   const user = await currentUserDb();
   const isInList = continentsList.some(
     (e) => e.toLocaleLowerCase() === continent.toLocaleLowerCase()
@@ -47,6 +49,7 @@ export const getListings = async ({
     },
 
     take: 10,
+    skip: start * 10,
     orderBy: { createdAt: "desc" },
     include: {
       reservations: { select: { review: { select: { stars: true } } } },

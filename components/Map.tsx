@@ -16,7 +16,7 @@ L.Icon.Default.mergeOptions({
 const Map = ({ center }: { center: LatLngExpression }) => {
 
   return (
-    <div className="w-full mt-6 rounded-xl h-[35dvh] ">
+    <div className="w-full max-md:h-[30dvh] max-md:w-[85%] mt-6 rounded-xl h-[35dvh] ">
       <MapContainer
         className="w-full mt-6 rounded-xl h-full "
         center={center || [50,0.9]}

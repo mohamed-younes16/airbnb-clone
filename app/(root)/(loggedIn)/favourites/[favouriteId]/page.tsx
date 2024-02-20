@@ -21,7 +21,7 @@ const page = async ({
     listing?.reservations[0].endDate;
 
   return (
-    <div className="px-10">
+    <div className="px-10 max-md:px-4">
       {listing !== null && (
         <>
           <div className="flex mb-8 justify-between">

@@ -64,7 +64,7 @@ const ImagesShow = ({ images }: { images: string[] }) => {
           <Drawer>
             <DrawerTrigger
               asChild
-              className=" w-full  relative  h-[55dvh] max-lg:h-[30dvh] max-xl:h-[40dvh] mx-auto rounded-xl overflow-hidden"
+              className=" w-full cursor-pointer  relative  h-[55dvh] max-lg:h-[30dvh] max-xl:h-[40dvh] mx-auto rounded-xl overflow-hidden"
             >
               <div>
                 <ImageContainer src={images[0]} />
