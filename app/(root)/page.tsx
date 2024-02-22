@@ -21,7 +21,7 @@ export default async function Home({
   };
 }) {
   const count = await prismadb.listing.count({
-    skip: +searchParams.page  || 0,
+    skip: +searchParams.page || 0,
   });
 
   const fetchedData =
@@ -30,36 +30,32 @@ export default async function Home({
       guestCount: +searchParams?.guests || 1,
       continent: searchParams.continent || "",
       category: searchParams.category || "",
-      start: +searchParams.page  || 0,
+      start: +searchParams.page || 0,
     })) || [];
   const user = await getCurrentUser();
   return (
     <>
-      <div className=" min-h-[100dvh] max-md:pb-28 ">
+      <div className="max-md:pb-28  min-h-[100dvh] flex flex-col justify-between  ">
         {fetchedData?.length == 0 ? (
-          <>
-            <div className="flexcenter flex-col text-center">
-              <Heading
-                title="No Listing Found "
-                description="try changing the filters "
-              />
-              <Button className="mt-8" variant={"outline"}>
-                <Link href={"/"}>Remove all Filters</Link>
-              </Button>
-            </div>
-          </>
-        ) : (
-          <div className="flex flex-col justify-between ">
-            <ProductsGrid
-              loggedIn={user?.onboarded || false}
-              type="listing"
-              listings={fetchedData}
+          <div className="flexcenter flex-col text-center">
+            <Heading
+              title="No Listing Found "
+              description="try changing the filters "
             />
-           
+            <Button className="mt-8" variant={"outline"}>
+              <Link href={"/"}>Remove all Filters</Link>
+            </Button>
           </div>
-        )}   <div className="mt-6">
-                <PaginationComponent count={count} />
-              </div>
+        ) : (
+          <ProductsGrid
+            loggedIn={user?.onboarded || false}
+            type="listing"
+            listings={fetchedData}
+          />
+        )}{" "}
+        <div className="my-6">
+          <PaginationComponent count={count} />
+        </div>
       </div>
     </>
   );

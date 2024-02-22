@@ -222,15 +222,14 @@ const Search = ({
 
   useEffect(() => {
     const redirected = searchParams.get("redirected") === "true";
-    setisRentModalOpen(false)
+    setisRentModalOpen(false);
     setpopopen(redirected && userData === null);
-
   }, [searchParams]);
 
   return (
     <>
       <div className="flexcenter lg:flex-1   gap-6">
-        <div className="w-full flex items-center justify-between">
+        <div className="w-full flex items-center justify-center">
           <NavigationMenuDemo continents={continents} />
         </div>
       </div>

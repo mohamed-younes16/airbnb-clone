@@ -85,7 +85,7 @@ const RentModal = () => {
   const description = watch("description");
   const price: number = +watch("price");
   const [isStepCompleted, setIsStepCompleted] = useState(false);
-
+  const isloading = form.formState.isSubmitting;
   useEffect(() => {
     const stepCompleted =
       (step === STEPS.CATEGORY && category?.length > 0) ||
@@ -332,10 +332,15 @@ const RentModal = () => {
   }
 
   return (
-    <Dialog open={isRentModalOpen} onOpenChange={(e) =>{ setisRentModalOpen(e)}}>
+    <Dialog
+      open={isRentModalOpen}
+      onOpenChange={(e) => {
+        setisRentModalOpen(e);
+      }}
+    >
       <DialogTrigger asChild className=" max-md:hidden text-start w-full">
         <div className="flexcenter">
-          <Button className="rounded-full" variant={"ghost"}>
+          <Button className="rounded-full" variant={"default"}>
             Airbnb your home
           </Button>
         </div>
@@ -383,7 +388,7 @@ const RentModal = () => {
 
               {
                 <Button
-                  disabled={!isStepCompleted && !isValid}
+                  disabled={(!isStepCompleted && !isValid) || isloading}
                   onClick={() => {
                     onNext();
                   }}

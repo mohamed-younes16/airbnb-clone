@@ -56,7 +56,6 @@ const ListingsGrid = ({
         .catch((e) => {
           toast.dismiss();
           toast.error(e.response.data.message || "Error Happend");
-   
         })
         .finally(() => setIsLoading(""));
       toast.dismiss();
@@ -68,8 +67,8 @@ const ListingsGrid = ({
   return (
     <div className=" w-full">
       <div
-        className="max-md:px-3 px-[40px] grid max-md:w-fit max-md:mx-auto 
-      mt-6 gap-6 grid-cols-[repeat(auto-fill_,_minmax(300px_,1fr))] "
+        className="max-md:px-3 px-[40px] grid justify-items-center max-md:w-fit max-md:mx-auto 
+      mt-6 gap-6 grid-cols-[repeat(auto-fill_,_minmax(350px_,1fr))] "
       >
         {listings.map((e, i: number) => (
           <m.div
