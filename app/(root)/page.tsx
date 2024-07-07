@@ -36,7 +36,7 @@ export default async function Home({
   return (
     <>
       <div className="max-md:pb-28  min-h-[100dvh] flex flex-col justify-between  ">
-        {fetchedData?.length == 0 ? (
+        {fetchedData?.length === 0 ? (
           <div className="flexcenter flex-col text-center">
             <Heading
               title="No Listing Found "

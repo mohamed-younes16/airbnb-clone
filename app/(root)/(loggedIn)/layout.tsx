@@ -1,8 +1,5 @@
 import getCurrentUser from "@/actions/getCurrentUser";
-import Heading from "@/components/Heading";
-import { Button } from "@/components/ui/button";
-import { ShieldAlert } from "lucide-react";
-import Link from "next/link";
+import LoginWarning from "@/components/LoginWarning";
 import { ReactNode } from "react";
 export const metadata = {
   title: "airbnb-clone",
@@ -19,16 +16,10 @@ export default async function RootLayout({
       {user?.id ? (
         children
       ) : (
-        <div className="flexcenter h-[50dvh] flex-col text-center">
-          <Heading
-            title="Not Logged In "
-            description="try Logging in to  access content."
-          />
-          <ShieldAlert size={40} className=" mt-6" />
-          <Button className="mt-8" variant={"outline"}>
-                <Link href={"/?redirected=true"}>Go to Login</Link>
-          </Button>
-        </div>
+        <LoginWarning
+          title="Not Logged In"
+          description="try Logging in to access content."
+        />
       )}
     </div>
   );

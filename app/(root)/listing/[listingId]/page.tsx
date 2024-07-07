@@ -7,6 +7,7 @@ import ListingShowCase from "@/components/ListingShowCase";
 import ImagesShow from "@/components/ImageShow";
 import { Separator } from "@/components/ui/separator";
 import getCurrentUser from "@/actions/getCurrentUser";
+import LoginWarning from "@/components/LoginWarning";
 
 const page = async ({
   params: { listingId },
@@ -44,17 +45,21 @@ const page = async ({
           <div className="flex flex-wrap gap-2 mt-8 ">
             <div className="flex-1 text-nowrap">
               <ListingShowCase listing={listing} />
-            </div>
-
-            {listing.ownerId !== user?.id && (
-              <div className="flex-1 flex h-fit justify-center">
+            </div>{" "}
+            <div className="flex-1 flex h-fit justify-center">
+              {!user?.id ? (
+                <LoginWarning
+                  title="Not Logged In"
+                  description="try Logging in to reserve."
+                />
+              ) : listing.ownerId !== user?.id && !!user?.id ? (
                 <DatePickerWithRange
                   fromDate={fromDate}
                   listingId={listingId}
                   price={listing.price || 0}
                 />
-              </div>
-            )}
+              ) : null}
+            </div>
           </div>
         </>
       )}

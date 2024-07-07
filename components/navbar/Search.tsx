@@ -235,9 +235,11 @@ const Search = ({
       </div>
       <div className="flexcenter lg:flex-1 gap-4 md:min-w-[180px]">
         <div className="md:flex-1">
-          <CliComponent>
-            <RentModal />
-          </CliComponent>
+          {userData && (
+            <CliComponent>
+              <RentModal />
+            </CliComponent>
+          )}
         </div>
 
         <div className="max-md:hidden">

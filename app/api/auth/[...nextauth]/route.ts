@@ -29,7 +29,7 @@ export const authOpts: AuthOptions = {
           throw new Error("no Creds____________________");
         }
 
-        const user = await prismadb.user.findUnique({
+        const user = await prismadb.user.findFirst({
           where: { email: cred.email },
         });
 

@@ -27,7 +27,7 @@ export const useStore = create<Store>()(
       requests: 0,
       setRequests: (v: number) => set(() => ({ requests: v })),
       isLoginModalOpen: false,
-      setisLoginModalOpen: (v: boolean) => set(() => ({ isRentModalOpen: v })),
+      setisLoginModalOpen: (v: boolean) => set(() => ({ isLoginModalOpen: v })),
     }),
     { name: "data", storage: createJSONStorage(() => sessionStorage) }
   )
